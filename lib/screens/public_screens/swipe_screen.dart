@@ -23,21 +23,27 @@ class _SwipeScreenState extends State<SwipeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              const SizedBox(
-                height: 500,
-                child: Placeholder(),
+              GestureDetector(
+                onTap: () {},
+                onHorizontalDragEnd: (details) {},
+                child: const Column(children: [
+                  SizedBox(
+                    height: 500,
+                    child: Placeholder(),
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'PET NAME - AGE',
+                    style: optionStyle,
+                  ),
+                  SizedBox(height: 10),
+                  Text(
+                    'Type - Breed',
+                    style: optionStyle,
+                  ),
+                  SizedBox(height: 20),
+                ]),
               ),
-              const SizedBox(height: 10),
-              const Text(
-                'PET NAME - AGE',
-                style: optionStyle,
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Type - Breed',
-                style: optionStyle,
-              ),
-              const SizedBox(height: 20),
               ButtonBar(
                   alignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
