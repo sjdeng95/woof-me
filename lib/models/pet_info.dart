@@ -1,4 +1,5 @@
 class PetInfo {
+  int? petId;
   String? name;
   String? picUrl;
   int? age;
@@ -11,7 +12,8 @@ class PetInfo {
   String? story;
 
   PetInfo(
-      {this.name,
+      {this.petId,
+      this.name,
       this.picUrl,
       this.age,
       this.type,
