@@ -32,7 +32,9 @@ class PetInfoMore extends StatelessWidget {
             onChanged: (value) {},
           ),
           const SizedBox(height: 40),
-          const Text('Pet short story goes here.')
+          const SizedBox(height: 40, child: Text('Pet short story goes here.')),
+          const SizedBox(height: 40),
+
         ]);
   }
 }
