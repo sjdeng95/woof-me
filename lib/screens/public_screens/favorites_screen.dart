@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../widgets/pet_widget.dart';
+
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
 
@@ -10,22 +12,19 @@ class FavoritesScreen extends StatefulWidget {
 
 class _FavoritesScreenState
     extends State<FavoritesScreen> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Favorites'),
+        title: const Text('FAVORITES'),
       ),
-      body: const Center(
-        child: Text(
-          'FAVORITES SCREEN',
-          style: optionStyle,
-        ),
+      body: Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: ListView(children: const [
+          PetWidget()
+        ]),
       ),
-    ); 
+    );
   }
 }
