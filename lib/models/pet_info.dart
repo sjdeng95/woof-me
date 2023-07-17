@@ -1,24 +1,24 @@
 class PetInfo {
-  String? url;
   String? name;
+  String? picUrl;
   int? age;
   String? type;
   String? breed;
-  bool? animals;
-  bool? children;
-  bool? offleash;
-  bool? availability;
-  String? description;
+  bool? goodAnimals;
+  bool? goodChildren;
+  bool? mustLeash;
+  String? availability;
+  String? story;
 
   PetInfo(
-      {this.url,
-      this.name,
+      {this.name,
+      this.picUrl,
       this.age,
       this.type,
       this.breed,
-      this.animals,
-      this.children,
-      this.offleash,
+      this.goodAnimals,
+      this.goodChildren,
+      this.mustLeash,
       this.availability,
-      this.description});
+      this.story});
 }
