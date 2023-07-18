@@ -10,8 +10,9 @@ class PetProfileScreen extends StatefulWidget {
 }
 
 class _PetProfileScreenState extends State<PetProfileScreen> {
-  // static const TextStyle optionStyle =
-  // TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const TextStyle optionStyle =
+    TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
 
   @override
   Widget build(BuildContext context) {

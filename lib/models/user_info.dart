@@ -11,6 +11,12 @@ class UserInfo {
   bool? likeGoodAnimals;
   bool? likeGoodChildren;
   bool? likeMustLeash;
+  String? location;
+  String? home;
+  String? vetName;
+  String? vetPhone;
+  String? vetLocation;
+  String? description;
 
   UserInfo(
       {this.userId,
@@ -24,5 +30,11 @@ class UserInfo {
       this.likedBreed,
       this.likeGoodAnimals,
       this.likeGoodChildren,
-      this.likeMustLeash});
+      this.likeMustLeash,
+      this.location,
+      this.home,
+      this.vetName,
+      this.vetPhone,
+      this.vetLocation,
+      this.description});
 }
