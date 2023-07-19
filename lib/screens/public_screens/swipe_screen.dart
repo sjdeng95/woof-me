@@ -27,10 +27,11 @@ class _SwipeScreenState extends State<SwipeScreen> {
             children: [
               GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: ((context) => const PetProfileScreen())));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: ((context) =>
+                    //             PetProfileScreen(arguments: petInfo))));
                   },
                   onHorizontalDragEnd: (details) {},
                   child: const PetInfoBasic()),
