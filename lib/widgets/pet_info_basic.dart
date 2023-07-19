@@ -12,30 +12,30 @@ class PetInfoBasic extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
+          const SizedBox(
             height: 400,
             child: Placeholder(),
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
-            'PET NAME',
+            '${petInfo!.name}',
             style: optionStyle,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
-            'AGE',
+            '${petInfo!.availability}',
             style: optionStyle,
           ),
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           Text(
-            'Type - Breed',
+            '${petInfo!.type} - ${petInfo!.breed}',
             style: optionStyle,
           ),
-          SizedBox(height: 20),
+          const SizedBox(height: 20),
         ]);
   }
 }
