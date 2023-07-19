@@ -5,7 +5,7 @@ import 'package:woofme/models/pet_info.dart';
 class PetInfoMore extends StatelessWidget {
   final PetInfo? petInfo;
 
-  const PetInfoMore({Key? key, this.petInfo}) : super(key: key);
+  const PetInfoMore({Key? key, required this.petInfo}) : super(key: key);
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -32,9 +32,8 @@ class PetInfoMore extends StatelessWidget {
             onChanged: (value) {},
           ),
           const SizedBox(height: 40),
-          const SizedBox(height: 40, child: Text('Pet short story goes here.')),
+          SizedBox(height: 40, child: Text('${petInfo!.story}')),
           const SizedBox(height: 40),
-
         ]);
   }
 }
