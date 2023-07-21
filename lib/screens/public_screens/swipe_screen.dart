@@ -5,6 +5,8 @@ import 'dart:developer';
 import 'package:woofme/models/pet_info.dart';
 import 'package:woofme/models/all_pets.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:woofme/screens/public_screens/pet_profile.dart';
+import 'package:woofme/widgets/pet_info_basic.dart';
 
 class SwipeScreen extends StatefulWidget {
   const SwipeScreen({super.key});
@@ -19,42 +21,14 @@ class _SwipeScreenState extends State<SwipeScreen> {
 
   AllPets allPets = AllPets();
 
-  late PetInfo pet;
+  PetInfo pet = PetInfo();
+
+  final AppinioSwiperController controller = AppinioSwiperController();
 
   @override
   void initState() {
     super.initState();
     getData();
-  }
-
-  Widget buildPet({required int index}) {
-    return Card(
-        color: Colors.white,
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              const SizedBox(
-                height: 400,
-                child: Placeholder(),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '${allPets.pets[index].name}',
-                style: optionStyle,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '${allPets.pets[index].availability}',
-                style: optionStyle,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                '${allPets.pets[index].type} - ${allPets.pets[index].breed}',
-                style: optionStyle,
-              ),
-              swipeOptions(),
-            ]));
   }
 
   final CollectionReference _collectionRef =
@@ -78,36 +52,63 @@ class _SwipeScreenState extends State<SwipeScreen> {
       allPets = AllPets(pets: petInfo);
       pet = allPets.pets[0];
     });
-    log(allPets as String);
-    log(pet as String);
+  }
+
+  Widget buildPet({required PetInfo petInfo}) {
+    return GestureDetector(
+        child: Card(
+          color: Colors.white,
+          child: PetInfoBasic(petInfo: petInfo),
+        ),
+        onTap: () => {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: ((context) =>
+                          PetProfileScreen(petInfo: petInfo))))
+            });
+  }
+
+  Widget swipeOptions({required PetInfo petInfo}) {
+    return ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
+      IconButton(
+        icon: const Icon(Icons.cancel, size: 75.0, color: Colors.red),
+        onPressed: () {
+          // allPets.pets.removeWhere((pets) => pets.petId == petInfo.petId);
+        },
+      ),
+      IconButton(
+        icon: const Icon(Icons.check_circle, size: 75.0, color: Colors.green),
+        onPressed: () {},
+      ),
+      IconButton(
+        icon: const Icon(Icons.undo_rounded, size: 75.0, color: Colors.grey),
+        onPressed: () {},
+      ),
+    ]);
   }
 
   @override
   Widget build(BuildContext context) {
-    return CupertinoPageScaffold(
-        child: SizedBox(
-            height: MediaQuery.of(context).size.height,
-            child: AppinioSwiper(
-              cardsCount: allPets.numberOfPets,
-              onSwiping: (AppinioSwiperDirection direction) {
-                log(direction.toString());
-              },
-              cardsBuilder: (BuildContext context, int i) {
-                return buildPet(index: i);
-              },
-            )));
-  }
-
-  ButtonBar swipeOptions() {
-    return ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
-      IconButton(
-        icon: const Icon(Icons.cancel, size: 50.0),
-        onPressed: () {},
-      ),
-      IconButton(
-        icon: const Icon(Icons.favorite_rounded, size: 50.0),
-        onPressed: () {},
-      ),
-    ]);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        CupertinoPageScaffold(
+            child: SizedBox(
+                height: MediaQuery.of(context).size.height * 0.75,
+                child: AppinioSwiper(
+                  cardsCount: allPets.numberOfPets,
+                  controller: controller,
+                  loop: true,
+                  padding: const EdgeInsets.all(20.0),
+                  cardsBuilder: (BuildContext context, int index) {
+                    // petId = allPets.pets[index].petId!;
+                    pet = allPets.pets[index];
+                    return buildPet(petInfo: allPets.pets[index]);
+                  },
+                ))),
+        swipeOptions(petInfo: pet)
+      ],
+    );
   }
 }
