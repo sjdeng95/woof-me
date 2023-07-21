@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import 'package:woofme/models/pet_info.dart';
+import 'package:woofme/models/all_pets.dart';
 import 'package:woofme/screens/public_screens/pet_profile.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -15,40 +16,74 @@ class _HomeScreenState extends State<HomeScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
-  Widget _buildPet(BuildContext context, DocumentSnapshot docs) {
+  AllPets allPets = AllPets();
+
+  PetInfo pet = PetInfo();
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  final CollectionReference _collectionRef =
+      FirebaseFirestore.instance.collection('pets');
+
+  Future<void> getData() async {
+    QuerySnapshot querySnapshot = await _collectionRef.get();
+
+    final petInfo = querySnapshot.docs.map((doc) {
+      return PetInfo(
+          name: doc['name'],
+          type: doc['type'],
+          breed: doc['breed'],
+          availability: doc['availability'],
+          goodAnimals: doc['good_w_animals'],
+          goodChildren: doc['good_w_children'],
+          mustLeash: doc['must_leash'],
+          story: doc['story']);
+    }).toList();
+    setState(() {
+      allPets = AllPets(pets: petInfo);
+      pet = allPets.pets[0];
+    });
+  }
+
+  Widget _buildPet(BuildContext context, PetInfo pet) {
     return Card(
       child: ListTile(
         leading:
             const SizedBox(height: double.infinity, child: Icon(Icons.pets)),
-        title: Text(docs['name'], style: optionStyle),
+        title: Text('${pet.name}', style: optionStyle),
         subtitle: Row(
-          children: [
-            Text(docs['type']),
-            const Text(' - '),
-            Text(docs['breed'])
-          ],
+          children: [Text('${pet.type} - ${pet.breed}')],
         ),
-        trailing: const SizedBox(
-            height: double.infinity, child: Icon(Icons.more_vert)),
+        trailing: SizedBox(
+            height: double.infinity,
+            child: petStatus(status: pet.availability!)),
         isThreeLine: true,
         onTap: () {
-          PetInfo petInfo = PetInfo(
-            name: docs['name'],
-            type: docs['type'],
-            breed: docs['breed'],
-            availability: docs['availability'],
-            goodAnimals: docs['good_w_animals'],
-            goodChildren: docs['good_w_children'],
-            mustLeash: docs['must_leash'],
-            story: docs['story'],
-          );
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: ((context) => PetProfileScreen(petInfo: petInfo))));
+                  builder: ((context) => PetProfileScreen(petInfo: pet))));
         },
       ),
     );
+  }
+
+  Icon petStatus({required String status}) {
+    if (status == 'Available') {
+      return const Icon(Icons.check_circle, color: Colors.green);
+    } else if (status == 'Not Available') {
+      return const Icon(Icons.not_interested, color: Colors.red);
+    } else if (status == 'Pending') {
+      return const Icon(Icons.pending_outlined, color: Colors.deepOrange);
+    } else if (status == 'Adopted') {
+      return const Icon(Icons.done_all, color: Colors.blue);
+    } else {
+      return const Icon(Icons.question_mark, color: Colors.grey);
+    }
   }
 
   @override
@@ -57,19 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: const Text('Woof-Me'),
         ),
-        body: StreamBuilder(
-          stream: FirebaseFirestore.instance
-              .collection('pets')
-              .orderBy('created_at')
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return const Text('No pets');
-            return ListView.builder(
-              itemCount: snapshot.data!.docs.length,
-              itemBuilder: (context, index) =>
-                  _buildPet(context, snapshot.data!.docs[index]),
-            );
-          },
+        body: ListView.builder(
+          itemCount: allPets.numberOfPets,
+          itemBuilder: (context, index) =>
+              _buildPet(context, allPets.pets[index]),
         ));
   }
 }
