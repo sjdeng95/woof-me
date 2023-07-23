@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent_tab_view.dart';
 import 'package:woofme/screens/public_screens/favorites_screen.dart';
@@ -6,16 +5,18 @@ import 'package:woofme/screens/public_screens/home_screen.dart';
 import 'package:woofme/screens/public_screens/settings_screen.dart';
 import 'package:woofme/screens/public_screens/swipe_screen.dart';
 import 'package:woofme/screens/public_screens/user_profile_screen.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:woofme/screens/login_screen.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  final SharedPreferences preference;
+  const MyApp({Key? key, required this.preference}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: LoginScreen(),
     );
   }
 }
@@ -35,29 +36,26 @@ class Home extends StatelessWidget {
       ];
     }
 
-    List<PersistentBottomNavBarItem> navBarsItems(){
+    List<PersistentBottomNavBarItem> navBarsItems() {
       return [
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.home),
           title: ("Home"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
-        ), 
-        
+        ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.favorite_border_rounded),
           title: ("Favorite"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),
-
         PersistentBottomNavBarItem(
           icon: const Icon(
             Icons.pets,
             color: Colors.white,
           ),
           title: ("Pets"),
-
           inactiveIcon: const Icon(
             Icons.pets_outlined,
             color: Colors.white,
@@ -65,14 +63,12 @@ class Home extends StatelessWidget {
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),
-
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.account_circle_outlined),
           title: ("Profile"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),
-        
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.settings_outlined),
           title: ("Setting"),
@@ -80,8 +76,6 @@ class Home extends StatelessWidget {
           inactiveColorPrimary: Colors.grey,
         ),
       ];
-
-
     }
 
     PersistentTabController controller;
@@ -89,7 +83,7 @@ class Home extends StatelessWidget {
     controller = PersistentTabController(initialIndex: 0);
     return PersistentTabView(
       context,
-      screens:buildScreens(),
+      screens: buildScreens(),
       items: navBarsItems(),
       controller: controller,
       confineInSafeArea: true,
@@ -113,9 +107,7 @@ class Home extends StatelessWidget {
         curve: Curves.ease,
         duration: Duration(milliseconds: 200),
       ),
-      navBarStyle:
-      NavBarStyle.style16,
-
+      navBarStyle: NavBarStyle.style16,
     );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
-import 'dart:developer';
 import 'package:woofme/models/pet_info.dart';
 import 'package:woofme/models/all_pets.dart';
 import 'package:flutter/cupertino.dart';
