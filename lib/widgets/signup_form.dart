@@ -3,19 +3,19 @@ import 'dart:developer';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class LoginForm extends StatefulWidget {
-  final VoidCallback onTapSignUp;
+class SignUpForm extends StatefulWidget {
+  final VoidCallback onTapSignIn;
 
-  const LoginForm({
+  const SignUpForm({
     Key? key,
-    required this.onTapSignUp,
+    required this.onTapSignIn,
   }) : super(key: key);
 
   @override
-  State<LoginForm> createState() => _LoginFormState();
+  State<SignUpForm> createState() => _SignUpFormState();
 }
 
-class _LoginFormState extends State<LoginForm> {
+class _SignUpFormState extends State<SignUpForm> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
@@ -59,12 +59,12 @@ class _LoginFormState extends State<LoginForm> {
                   TextFormField(
                     controller: passwordController,
                     textInputAction: TextInputAction.done,
-                    obscureText: true,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: "Password"),
+                    obscureText: true,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
+                        return 'Please enter a password';
                       }
                       return null;
                     },
@@ -74,16 +74,16 @@ class _LoginFormState extends State<LoginForm> {
                     style: ElevatedButton.styleFrom(
                       minimumSize: const Size.fromHeight(50.0),
                     ),
-                    icon: const Icon(Icons.lock_open, size: 30),
-                    label: const Text('Sign In', style: optionStyle),
+                    icon: const Icon(Icons.arrow_forward_rounded, size: 30),
+                    label: const Text('Sign Up', style: optionStyle),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        signIn();
+                        signUp();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(
                               content: Text(
-                                  'Please fill in your email and password')),
+                                  'Please sign up with an email and password')),
                         );
                       }
                     },
@@ -92,26 +92,19 @@ class _LoginFormState extends State<LoginForm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('No Account? '),
+                      const Text('Already have an account?  '),
                       GestureDetector(
-                          onTap: widget.onTapSignUp,
-                          child: const Text('Sign Up', style: linkStyle)),
+                        onTap: widget.onTapSignIn,
+                        child: const Text('Sign In', style: linkStyle),
+                      ),
                     ],
                   ),
-                  const SizedBox(height: 20.0),
-                  GestureDetector(
-                      child: const Text('Forget Username?', style: linkStyle),
-                      onTap: () {}),
-                  const SizedBox(height: 10.0),
-                  GestureDetector(
-                      child: const Text('Forget Password?', style: linkStyle),
-                      onTap: () {}),
                 ])));
   }
 
-  Future signIn() async {
+  Future signUp() async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
