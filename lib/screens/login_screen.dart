@@ -13,14 +13,16 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const PublicNavigation();
-          } else {
-            return const LoginForm();
-          }
-        });
+    return Scaffold(
+      body: StreamBuilder<User?>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              return const PublicNavigation();
+            } else {
+              return const LoginForm();
+            }
+          }),
+    );
   }
 }

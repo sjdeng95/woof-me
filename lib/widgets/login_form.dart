@@ -12,6 +12,9 @@ class _LoginFormState extends State<LoginForm> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
+  static const TextStyle linkStyle = TextStyle(
+      fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueAccent);
+
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -75,19 +78,24 @@ class _LoginFormState extends State<LoginForm> {
                       }
                     },
                   ),
-                  const SizedBox(height: 10.0),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Navigate to sign-up screen
-                    },
-                    child: const Text('Sign-up', style: optionStyle),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('No Account? '),
+                      GestureDetector(
+                          child: const Text('Sign Up', style: linkStyle),
+                          onTap: () {}),
+                    ],
                   ),
                   const SizedBox(height: 20.0),
                   GestureDetector(
-                      child: const Text('Forget Username?'), onTap: () {}),
+                      child: const Text('Forget Username?', style: linkStyle),
+                      onTap: () {}),
                   const SizedBox(height: 10.0),
                   GestureDetector(
-                      child: const Text('Forget Password?'), onTap: () {}),
+                      child: const Text('Forget Password?', style: linkStyle),
+                      onTap: () {}),
                 ])));
   }
 
