@@ -10,7 +10,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   final user = FirebaseAuth.instance.currentUser!;
 
@@ -20,19 +20,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
       appBar: AppBar(
         title: const Text('Settings'),
       ),
-      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Text(
-          'Signed in as ${user.email}',
-          style: optionStyle,
-        ),
-        const SizedBox(height: 20.0),
-        ElevatedButton.icon(
-            style: ElevatedButton.styleFrom(
-                minimumSize: const Size.fromHeight(50.0)),
-            icon: const Icon(Icons.lock, size: 30),
-            label: const Text('Sign Out'),
-            onPressed: () {})
-      ]),
+      body: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            const Text('Signed in as'),
+            Text(
+              '${user.email}',
+              style: optionStyle,
+            ),
+            const SizedBox(height: 20.0),
+            ElevatedButton.icon(
+              style: ElevatedButton.styleFrom(
+                  minimumSize: const Size.fromHeight(50.0)),
+              icon: const Icon(Icons.exit_to_app_rounded, size: 30),
+              label: const Text('Sign Out'),
+              onPressed: () => FirebaseAuth.instance.signOut(),
+            )
+          ]),
     );
   }
 }
