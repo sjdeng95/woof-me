@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:woofme/models/pet_info.dart';
@@ -88,6 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final user = FirebaseAuth.instance.currentUser!;
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Woof-Me'),
