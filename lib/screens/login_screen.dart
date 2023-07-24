@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:woofme/widgets/login_form.dart';
+import 'package:flutter/material.dart';
+import 'package:woofme/screens/auth_page.dart';
 import 'package:woofme/widgets/public_navigation.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -17,10 +17,14 @@ class _LoginScreenState extends State<LoginScreen> {
       body: StreamBuilder<User?>(
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
-            if (snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return const Center(child: Text('Something went wrong...'));
+            } else if (snapshot.hasData) {
               return const PublicNavigation();
             } else {
-              return const LoginForm();
+              return AuthPage();
             }
           }),
     );

@@ -1,8 +1,15 @@
-import 'package:flutter/material.dart';
+import 'dart:developer';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({super.key});
+  final VoidCallback onTapSignUp;
+
+  const LoginForm({
+    Key? key,
+    required this.onTapSignUp,
+  }) : super(key: key);
 
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -52,6 +59,7 @@ class _LoginFormState extends State<LoginForm> {
                   TextFormField(
                     controller: passwordController,
                     textInputAction: TextInputAction.done,
+                    obscureText: true,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: "Password"),
                     validator: (value) {
@@ -73,7 +81,9 @@ class _LoginFormState extends State<LoginForm> {
                         signIn();
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Please fill input')),
+                          const SnackBar(
+                              content: Text(
+                                  'Please fill in your email and password')),
                         );
                       }
                     },
@@ -84,8 +94,8 @@ class _LoginFormState extends State<LoginForm> {
                     children: [
                       const Text('No Account? '),
                       GestureDetector(
-                          child: const Text('Sign Up', style: linkStyle),
-                          onTap: () {}),
+                          onTap: widget.onTapSignUp,
+                          child: const Text('Sign Up', style: linkStyle)),
                     ],
                   ),
                   const SizedBox(height: 20.0),
@@ -100,8 +110,12 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   Future signIn() async {
-    await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: emailController.text.trim(),
-        password: passwordController.text.trim());
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+          email: emailController.text.trim(),
+          password: passwordController.text.trim());
+    } on FirebaseAuthException catch (e) {
+      log(e as String);
+    }
   }
 }
