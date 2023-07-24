@@ -5,13 +5,10 @@ class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
 
   @override
-  State<UserProfileScreen> createState() =>
-      _UserProfileScreenState();
+  State<UserProfileScreen> createState() => _UserProfileScreenState();
 }
 
-class _UserProfileScreenState
-    extends State<UserProfileScreen> {
-  
+class _UserProfileScreenState extends State<UserProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,9 +17,7 @@ class _UserProfileScreenState
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
-        child: ListView(children: const [
-          UserInfo()
-        ]),
+        child: ListView(children: const [UserInfo()]),
       ),
     );
   }

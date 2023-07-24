@@ -24,7 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
             } else if (snapshot.hasData) {
               return const PublicNavigation();
             } else {
-              return AuthPage();
+              return const AuthPage();
             }
           }),
     );
