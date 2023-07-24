@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class NewPetScreen extends StatefulWidget {
-  const NewPetScreen({super.key});
+class AllUsersScreen extends StatefulWidget {
+  const AllUsersScreen({super.key});
 
   @override
-  State<NewPetScreen> createState() => _NewPetScreenState();
+  State<AllUsersScreen> createState() => _AllUsersScreenState();
 }
 
-class _NewPetScreenState extends State<NewPetScreen> {
+class _AllUsersScreenState extends State<AllUsersScreen> {
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
@@ -18,11 +18,12 @@ class _NewPetScreenState extends State<NewPetScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Admin New Pet'),
+        title: const Text('Woof-Me'),
       ),
-      body: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+      body:
+          const Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Text(
-          'Signed in as ${user.email}',
+          'ALL USERS SCREEN',
           style: optionStyle,
         ),
       ]),
