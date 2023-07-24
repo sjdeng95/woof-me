@@ -21,6 +21,7 @@ dependencies:
   flutter_profile_picture: ^2.0.0
   swipe_cards: ^2.0.0+1
   appinio_swiper: ^2.0.2
+  firebase_auth: ^4.7.1
 
 
 
