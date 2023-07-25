@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:woofme/widgets/pet_widget.dart';
 
 
-class UserInfo extends StatelessWidget {
-  final UserInfo? userInfo;
+class PublicProfile extends StatelessWidget {
+  final PublicProfile? publicProfile;
 
-  const UserInfo({Key? key, this.userInfo}) : super(key: key);
+  const PublicProfile({Key? key, this.publicProfile}) : super(key: key);
 
   static const TextStyle optionStyle =
     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -124,9 +123,7 @@ class UserInfo extends StatelessWidget {
           const SizedBox(height: 10),
 
           // TODO change with current pets 
-          const PetWidget(),
-          const SizedBox(height: 10,),
-          const PetWidget(),
+
 
         ]);
   }

@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -104,9 +105,19 @@ class _SignUpFormState extends State<SignUpForm> {
 
   Future signUp() async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
+
+      // Creating the user
+      UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: emailController.text.trim(),
           password: passwordController.text.trim());
+      // creating a new document in cloud firebase
+      FirebaseFirestore.instance
+        .collection("Users")
+        .doc(userCredential.user!.email)
+        .set({
+          'username': emailController.text.split('@')[0],
+          'bio': 'empty bio'
+        });
     } on FirebaseAuthException catch (e) {
       log(e as String);
     }

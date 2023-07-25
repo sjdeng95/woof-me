@@ -41,8 +41,27 @@ class _LoginFormState extends State<LoginForm> {
             padding: const EdgeInsets.all(15.0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  // TODO: update ICON later
+                  const Icon(
+                    Icons.pets,
+                    size: 100,
+                    color: Colors.blue,
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  const Text(
+                    "Welcome Back, Lets find your Paw-fect Match!",
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+
                   TextFormField(
                     controller: emailController,
                     textInputAction: TextInputAction.next,
