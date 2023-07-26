@@ -15,8 +15,8 @@ class SwipeScreen extends StatefulWidget {
 }
 
 class _SwipeScreenState extends State<SwipeScreen> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  // static const TextStyle optionStyle =
+  //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   AllPets allPets = AllPets();
 
@@ -39,13 +39,14 @@ class _SwipeScreenState extends State<SwipeScreen> {
     final petInfo = querySnapshot.docs.map((doc) {
       return PetInfo(
           name: doc['name'],
-          type: doc['type'],
-          breed: doc['breed'],
+          type: capitalize(doc['type']),
+          breed: capitalize(doc['breed']),
           availability: doc['availability'],
           goodAnimals: doc['good_w_animals'],
           goodChildren: doc['good_w_children'],
           mustLeash: doc['must_leash'],
-          story: doc['story']);
+          story: doc['story'],
+          pic: doc['pic']);
     }).toList();
     setState(() {
       allPets = AllPets(pets: petInfo);
@@ -55,59 +56,112 @@ class _SwipeScreenState extends State<SwipeScreen> {
 
   Widget buildPet({required PetInfo petInfo}) {
     return GestureDetector(
-        child: Card(
-          color: Colors.white,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => PetProfileScreen(petInfo: petInfo),
+          ),
+        );
+      },
+      child: Material(
+        color: Colors.transparent,
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8.0),
+          ),
           child: PetInfoBasic(petInfo: petInfo),
         ),
-        onTap: () => {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: ((context) =>
-                          PetProfileScreen(petInfo: petInfo))))
-            });
+      ),
+    );
   }
 
   Widget swipeOptions({required PetInfo petInfo}) {
-    return ButtonBar(alignment: MainAxisAlignment.center, children: <Widget>[
-      IconButton(
-        icon: const Icon(Icons.cancel, size: 75.0, color: Colors.red),
-        onPressed: () {
-          // allPets.pets.removeWhere((pets) => pets.petId == petInfo.petId);
-        },
-      ),
-      IconButton(
-        icon: const Icon(Icons.check_circle, size: 75.0, color: Colors.green),
-        onPressed: () {},
-      ),
-      IconButton(
-        icon: const Icon(Icons.undo_rounded, size: 75.0, color: Colors.grey),
-        onPressed: () {},
-      ),
-    ]);
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        ElevatedButton.icon(
+          icon: const Icon(Icons.close_rounded, size: 35.0, color: Colors.red),
+          label: const Text('Dislike', style: TextStyle(color: Colors.black)),
+          onPressed: () {
+            controller.swipeLeft();
+            // allPets.pets.removeWhere((pets) => pets.petId == petInfo.petId);
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+        ),
+        ElevatedButton.icon(
+          icon: const Icon(Icons.undo_rounded, size: 35.0, color: Colors.grey),
+          label: const Text('Undo', style: TextStyle(color: Colors.black)),
+          onPressed: () {
+            controller.unswipe();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+        ),
+        ElevatedButton.icon(
+          icon: const Icon(Icons.favorite_rounded, size: 35.0, color: Colors.pinkAccent),
+          label: const Text('Like', style: TextStyle(color: Colors.black)),
+          onPressed: () {
+            controller.swipeRight();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Scaffold(
+        appBar: AppBar(
+          title: const Text('Find Your Pawfect Match'),
+        ),
+    body: Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         CupertinoPageScaffold(
             child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.75,
+                height: MediaQuery.of(context).size.height * 0.60,
+                width: double.infinity,
                 child: AppinioSwiper(
                   cardsCount: allPets.numberOfPets,
                   controller: controller,
                   loop: true,
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.all(0),
                   cardsBuilder: (BuildContext context, int index) {
                     // petId = allPets.pets[index].petId!;
                     pet = allPets.pets[index];
                     return buildPet(petInfo: allPets.pets[index]);
                   },
                 ))),
+        // add space between swipe cards and swipe options
+        const SizedBox(height: 70),
         swipeOptions(petInfo: pet)
       ],
+    )
     );
   }
+}
+
+String capitalize(String input) {
+  if (input.isEmpty) return '';
+  return input
+      .split(' ')
+      .map((word) => word.substring(0, 1).toUpperCase() + word.substring(1))
+      .join(' ');
 }

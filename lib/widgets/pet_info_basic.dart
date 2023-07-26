@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:woofme/models/pet_info.dart';
 
 class PetInfoBasic extends StatelessWidget {
@@ -8,34 +7,67 @@ class PetInfoBasic extends StatelessWidget {
   const PetInfoBasic({Key? key, this.petInfo}) : super(key: key);
 
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          const SizedBox(
-            height: 400,
-            child: Placeholder(),
+    return Stack(
+      children: [
+        Image.network(
+          '${petInfo!.pic}',
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.60,
+          fit: BoxFit.cover,
+        ),
+        Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height * 0.60,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Colors.transparent,
+                Colors.black.withOpacity(0.7),
+              ],
+            ),
           ),
-          const SizedBox(height: 10),
-          Text(
-            '${petInfo!.name}',
-            style: optionStyle,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '${petInfo!.availability}',
-            style: optionStyle,
-          ),
-          const SizedBox(height: 10),
-          Text(
-            '${petInfo!.type} - ${petInfo!.breed}',
-            style: optionStyle,
-          ),
-          const SizedBox(height: 20),
-        ]);
+        ),
+        Positioned(
+            bottom: 20,
+            left: 20,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                    '${petInfo!.name}',
+                    style: const TextStyle(
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    )
+                ),
+                const SizedBox(height: 2),
+                Text(
+                    '${petInfo!.availability}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    )
+                ),
+                const SizedBox(height: 2),
+                Text(
+                    '${petInfo!.type} - ${petInfo!.breed}',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      color: Colors.white,
+                    )
+                ),
+                const SizedBox(height: 2),
+              ],
+            )
+        ),],
+    );
   }
 }

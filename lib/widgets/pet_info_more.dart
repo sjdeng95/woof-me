@@ -13,27 +13,36 @@ class PetInfoMore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CheckboxListTile(
-            title: const Text("Good with other animals"),
-            value: true,
-            onChanged: (value) {},
+      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CheckboxListTile(
+          title: const Text("Good with other animals"),
+          value: petInfo!.goodAnimals,
+          onChanged: (value) {},
+        ),
+        CheckboxListTile(
+          title: const Text("Good with children"),
+          value: petInfo!.goodChildren,
+          onChanged: (value) {},
+        ),
+        CheckboxListTile(
+          title: const Text("Must be on leash at all times"),
+          value: petInfo!.mustLeash,
+          onChanged: (value) {},
+        ),
+        const SizedBox(height: 15),
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: SizedBox(
+            height: 120,
+            child: Text(
+              '${petInfo!.story}',
+              style: const TextStyle(fontSize: 16),
+            ),
           ),
-          CheckboxListTile(
-            title: const Text("Good with children"),
-            value: true,
-            onChanged: (value) {},
-          ),
-          CheckboxListTile(
-            title: const Text("Must be on leash at all times"),
-            value: true,
-            onChanged: (value) {},
-          ),
-          const SizedBox(height: 40),
-          SizedBox(height: 40, child: Text('${petInfo!.story}')),
-          const SizedBox(height: 40),
-        ]);
+        ),
+      ],
+    );
   }
 }
