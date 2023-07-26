@@ -85,6 +85,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                   const SizedBox(height: 10),
 
+                  // username
+                  Text(
+                    userData['username'],
+                    textAlign: TextAlign.center,
+                  ),
+
                   // user email
                   Text(
                     currentUser.email!,
@@ -100,8 +106,13 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
 
                   TextBox(
+                    text: userData['name'],
+                    sectionName: 'Name',
+                    onPressed: () => editField('name'),
+                  ),
+                  TextBox(
                     text: userData['username'],
-                    sectionName: 'username',
+                    sectionName: 'Username',
                     onPressed: () => editField('username'),
                   ),
 
@@ -116,6 +127,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     sectionName: 'bio',
                     onPressed: () => editField('bio'),
                   ),
+                  TextBox(
+                    text: userData['like_type'],
+                    sectionName: 'Favorite Species',
+                    onPressed: () => editField('like_type'),
+                  ),
+                  TextBox(
+                    text: userData['like_breed'],
+                    sectionName: 'Favorite Breed',
+                    onPressed: () => editField('like_breed'),
+                  ),
+                  const SizedBox(height: 50,),
                 ],
               );
             } else if (snapshot.hasError) {
