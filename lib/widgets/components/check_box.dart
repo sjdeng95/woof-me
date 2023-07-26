@@ -10,17 +10,30 @@ class PreferencesCheckBox extends StatefulWidget {
 }
 
 class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
+
+  final userCollection = FirebaseFirestore.instance.collection('Users');
+  final currentUser = FirebaseAuth.instance.currentUser!;
+
   bool like_good_w_animals = false;
   bool like_good_w_children = false;
   bool like_must_leash = false;
   
-  // Your Firestore user collection
-  final userCollection = FirebaseFirestore.instance.collection('Users');
-  final currentUser = FirebaseAuth.instance.currentUser!;
+  @override
+  void initState() {
+    super.initState();
+    getUserPreferences().then((userData) {
+      setState(() {
+        like_good_w_animals = userData['like_good_w_animals'];
+        like_good_w_children = userData['like_good_w_children'];
+        like_must_leash = userData['like_must_leash'];
+      });
+    });
+  }
 
-  // Method to update the Firestore fields
+  Future<DocumentSnapshot> getUserPreferences() async {
+  return await userCollection.doc(currentUser.email).get();
+}
   Future<void> updateField(String field, bool value) {
-    // Replace `docID` with your actual document ID
     return userCollection.doc(currentUser.email).update({field: value});
   }
 
