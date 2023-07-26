@@ -116,7 +116,20 @@ class _SignUpFormState extends State<SignUpForm> {
         .doc(userCredential.user!.email)
         .set({
           'username': emailController.text.split('@')[0],
-          'bio': 'empty bio'
+          'email': emailController.text,
+          'bio': '',
+          'is_admin': false,
+          'like_breed': '',
+          'like_good_w_animals': false,
+          'like_good_w_children': false,
+          'like_must_leash': false,
+          'like_type': '',
+          'liked_pets': [],
+          'disliked_pets': [],
+          'name':'',
+          'phone': '',
+          'pic':'',
+
         });
     } on FirebaseAuthException catch (e) {
       log(e as String);
