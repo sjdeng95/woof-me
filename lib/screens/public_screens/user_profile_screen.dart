@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:woofme/widgets/components/text_box.dart';
+import 'package:woofme/widgets/components/check_box.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -76,7 +77,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               return ListView(
                 children: [
                   const SizedBox(height: 50),
-
                   // profile picture
                   const Icon(
                     Icons.person,
@@ -137,7 +137,18 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     sectionName: 'Favorite Breed',
                     onPressed: () => editField('like_breed'),
                   ),
+                  
+                  const SizedBox(height: 20),
+
+                  const Padding(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text("Pet Preferences"),
+                  ),
+                                   
+                  const PreferencesCheckBox(),
+
                   const SizedBox(height: 50,),
+
                 ],
               );
             } else if (snapshot.hasError) {

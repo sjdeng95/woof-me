@@ -49,7 +49,7 @@ class _LoginFormState extends State<LoginForm> {
                   // TODO: update ICON later
                   const Icon(
                     Icons.pets,
-                    size: 100,
+                    size: 70,
                     color: Colors.blue,
                   ),
                   const SizedBox(
