@@ -20,10 +20,11 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Find Your Pawfect Match'),
+        title: const Text('Pet Profile'),
       ),
+      // show pet info basic and pet info more
       body: Padding(
-        padding: const EdgeInsets.all(15.0),
+        padding: const EdgeInsets.all(0),
         child: ListView(children: [
           PetInfoBasic(petInfo: widget.petInfo),
           PetInfoMore(petInfo: widget.petInfo),

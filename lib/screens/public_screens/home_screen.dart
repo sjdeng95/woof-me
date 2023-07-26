@@ -36,13 +36,14 @@ class _HomeScreenState extends State<HomeScreen> {
     final petInfo = querySnapshot.docs.map((doc) {
       return PetInfo(
           name: doc['name'],
-          type: doc['type'],
-          breed: doc['breed'],
+          type: capitalize(doc['type']),
+          breed: capitalize(doc['breed']),
           availability: doc['availability'],
           goodAnimals: doc['good_w_animals'],
           goodChildren: doc['good_w_children'],
           mustLeash: doc['must_leash'],
-          story: doc['story']);
+          story: doc['story'],
+          pic: doc['pic']);
     }).toList();
     setState(() {
       allPets = AllPets(pets: petInfo);
@@ -101,4 +102,12 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildPet(context, allPets.pets[index]),
         ));
   }
+}
+
+String capitalize(String input) {
+  if (input.isEmpty) return '';
+  return input
+      .split(' ')
+      .map((word) => word.substring(0, 1).toUpperCase() + word.substring(1))
+      .join(' ');
 }
