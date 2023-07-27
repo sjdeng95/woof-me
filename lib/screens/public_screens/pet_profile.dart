@@ -20,7 +20,7 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Pet Profile'),
+        title: Text('All About ${widget.petInfo.name}'),
       ),
       // show pet info basic and pet info more
       body: Padding(
