@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:woofme/widgets/components/text_box.dart';
 import 'package:woofme/widgets/components/check_box.dart';
+import '../../widgets/components/image_upload.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
@@ -77,10 +78,22 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
               return ListView(
                 children: [
                   const SizedBox(height: 50),
-                  // profile picture
-                  const Icon(
-                    Icons.person,
-                    size: 72,
+
+                  Align(
+                    alignment: Alignment.center,
+                    child: InkWell(
+                      onTap: () => editProfilePicture(context),
+                      child: userData['pic'] != null && userData['pic'].isNotEmpty
+                          ? ClipOval(
+                        child: Image.network(
+                          userData['pic'],
+                          width: 100,
+                          height: 100,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                          : const Icon(Icons.person, size: 72),
+                    ),
                   ),
 
                   const SizedBox(height: 10),

@@ -13,6 +13,8 @@ dependencies:
   cloud_firestore: ^4.8.3
   firebase_storage: ^11.0.4
   shared_preferences: ^2.0.15
+  image_picker: ^0.8.4+5
+  http: ^0.13.4
 
   cupertino_icons: ^1.0.2
 
@@ -39,6 +41,7 @@ flutter:
 
   assets:
     - 'assets/images/profile.png'
+    - 'assets/images/login_dog.gif'
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
