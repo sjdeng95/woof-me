@@ -106,6 +106,13 @@ class _LoginFormState extends State<LoginForm> {
                   GestureDetector(
                       child: const Text('Forget Password?', style: linkStyle),
                       onTap: () {}),
+                  const SizedBox(height: 40.0),
+                  Image.asset(
+                    'assets/images/login_dog.gif',
+                    width: 200,
+                    height: 200,
+                    fit: BoxFit.contain,
+                  ),
                 ])));
   }
 
