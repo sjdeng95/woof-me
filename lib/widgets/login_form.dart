@@ -17,7 +17,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+  TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   static const TextStyle linkStyle = TextStyle(
       fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueAccent);
@@ -125,13 +125,6 @@ class _LoginFormState extends State<LoginForm> {
                   GestureDetector(
                       child: const Text('Forget Password?', style: linkStyle),
                       onTap: () {}),
-                  const SizedBox(height: 40.0),
-                  Image.asset(
-                    'assets/images/login_dog.gif',
-                    width: 200,
-                    height: 200,
-                    fit: BoxFit.contain,
-                  ),
                 ])));
   }
 
@@ -145,3 +138,12 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 }
+
+// extra ui decoration removed
+// const SizedBox(height: 40.0),
+// Image.asset(
+//   'assets/images/login_dog.gif',
+//   width: 200,
+//   height: 200,
+//   fit: BoxFit.contain,
+// ),

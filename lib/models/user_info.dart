@@ -5,7 +5,6 @@ class UserInfo {
   bool? isAdmin;
   String? email;
   int? phone;
-  String? userPic;
   String? likedType;
   String? likedBreed;
   bool? likeGoodAnimals;
@@ -23,7 +22,6 @@ class UserInfo {
       this.isAdmin,
       this.email,
       this.phone,
-      this.userPic,
       this.likedType,
       this.likedBreed,
       this.likeGoodAnimals,
