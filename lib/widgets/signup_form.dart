@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../screens/update_user_info.dart';
 
 class SignUpForm extends StatefulWidget {
   final VoidCallback onTapSignIn;
@@ -104,11 +107,40 @@ class _SignUpFormState extends State<SignUpForm> {
 
   Future signUp() async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: emailController.text.trim(),
-          password: passwordController.text.trim());
+      // Creating the user
+      UserCredential userCredential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim());
+      // creating a new document in cloud firebase
+      FirebaseFirestore.instance
+          .collection("Users")
+          .doc(userCredential.user!.email)
+          .set({
+        'username': emailController.text.split('@')[0],
+        'email': emailController.text,
+        'bio': '',
+        'is_admin': false,
+        'like_breed': '',
+        'like_good_w_animals': false,
+        'like_good_w_children': false,
+        'like_must_leash': false,
+        'like_type': '',
+        'liked_pets': [],
+        'disliked_pets': [],
+        'name': '',
+        'phone': '',
+        'pic': '',
+      });
+      // Navigate to the update user info screen
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                UpdateUserInfoScreen(userDocId: userCredential.user!.email!)),
+      );
     } on FirebaseAuthException catch (e) {
-      log(e as String);
+      log(e.message!);
     }
   }
 }
