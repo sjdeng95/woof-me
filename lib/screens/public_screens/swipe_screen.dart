@@ -30,8 +30,9 @@ class _SwipeScreenState extends State<SwipeScreen> {
     getData();
   }
 
-  final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('pets');
+  final _collectionRef = FirebaseFirestore.instance
+      .collection('pets')
+      .where('availability', isEqualTo: "Available");
 
   Future<void> getData() async {
     QuerySnapshot querySnapshot = await _collectionRef.get();
@@ -109,7 +110,8 @@ class _SwipeScreenState extends State<SwipeScreen> {
           ),
         ),
         ElevatedButton.icon(
-          icon: const Icon(Icons.favorite_rounded, size: 35.0, color: Colors.pinkAccent),
+          icon: const Icon(Icons.favorite_rounded,
+              size: 35.0, color: Colors.pinkAccent),
           label: const Text('Like', style: TextStyle(color: Colors.black)),
           onPressed: () {
             controller.swipeRight();
@@ -131,30 +133,29 @@ class _SwipeScreenState extends State<SwipeScreen> {
         appBar: AppBar(
           title: const Text('Find Your Pawfect Match'),
         ),
-    body: Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        CupertinoPageScaffold(
-            child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.60,
-                width: double.infinity,
-                child: AppinioSwiper(
-                  cardsCount: allPets.numberOfPets,
-                  controller: controller,
-                  loop: true,
-                  padding: const EdgeInsets.all(0),
-                  cardsBuilder: (BuildContext context, int index) {
-                    // petId = allPets.pets[index].petId!;
-                    pet = allPets.pets[index];
-                    return buildPet(petInfo: allPets.pets[index]);
-                  },
-                ))),
-        // add space between swipe cards and swipe options
-        const SizedBox(height: 70),
-        swipeOptions(petInfo: pet)
-      ],
-    )
-    );
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            CupertinoPageScaffold(
+                child: SizedBox(
+                    height: MediaQuery.of(context).size.height * 0.60,
+                    width: double.infinity,
+                    child: AppinioSwiper(
+                      cardsCount: allPets.numberOfPets,
+                      controller: controller,
+                      loop: true,
+                      padding: const EdgeInsets.all(0),
+                      cardsBuilder: (BuildContext context, int index) {
+                        // petId = allPets.pets[index].petId!;
+                        pet = allPets.pets[index];
+                        return buildPet(petInfo: allPets.pets[index]);
+                      },
+                    ))),
+            // add space between swipe cards and swipe options
+            const SizedBox(height: 70),
+            swipeOptions(petInfo: pet)
+          ],
+        ));
   }
 }
 
