@@ -17,7 +17,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   static const TextStyle optionStyle =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+  TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   static const TextStyle linkStyle = TextStyle(
       fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueAccent);
@@ -41,8 +41,27 @@ class _LoginFormState extends State<LoginForm> {
             padding: const EdgeInsets.all(15.0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  // TODO: update ICON later
+                  const Icon(
+                    Icons.pets,
+                    size: 70,
+                    color: Colors.blue,
+                  ),
+                  const SizedBox(
+                    height: 50,
+                  ),
+                  const Text(
+                    "Welcome Back, Lets find your Paw-fect Match!",
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+
                   TextFormField(
                     controller: emailController,
                     textInputAction: TextInputAction.next,
@@ -119,3 +138,12 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 }
+
+// extra ui decoration removed
+// const SizedBox(height: 40.0),
+// Image.asset(
+//   'assets/images/login_dog.gif',
+//   width: 200,
+//   height: 200,
+//   fit: BoxFit.contain,
+// ),
