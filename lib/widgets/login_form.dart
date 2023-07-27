@@ -1,7 +1,9 @@
 import 'dart:developer';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:woofme/widgets/components/utils.dart';
 
 class LoginForm extends StatefulWidget {
   final VoidCallback onTapSignUp;
@@ -17,7 +19,7 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
 
   static const TextStyle linkStyle = TextStyle(
       fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueAccent);
@@ -67,12 +69,11 @@ class _LoginFormState extends State<LoginForm> {
                     textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: "Email"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (email) =>
+                        email != null && EmailValidator.validate(email)
+                            ? 'Enter a valid email'
+                            : null,
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
@@ -81,12 +82,10 @@ class _LoginFormState extends State<LoginForm> {
                     obscureText: true,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: "Password"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      return null;
-                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) => value != null && value.length < 8
+                        ? 'Your password must be atleast 8 characters long.'
+                        : null,
                   ),
                   const SizedBox(height: 15.0),
                   ElevatedButton.icon(
@@ -135,6 +134,7 @@ class _LoginFormState extends State<LoginForm> {
           password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
       log(e as String);
+      // Utils.showSnackBar(e.message);
     }
   }
 }
