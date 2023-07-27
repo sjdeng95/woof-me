@@ -54,8 +54,14 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildPet(BuildContext context, PetInfo pet) {
     return Card(
       child: ListTile(
-        leading:
-            const SizedBox(height: double.infinity, child: Icon(Icons.pets)),
+        leading: SizedBox(
+          height: double.infinity,
+          child: CircleAvatar(
+            backgroundImage: NetworkImage(
+              '${pet.pic}',
+            ),
+          ),
+        ),
         title: Text('${pet.name}', style: optionStyle),
         subtitle: Row(
           children: [Text('${pet.type} - ${pet.breed}')],
