@@ -1,6 +1,5 @@
 import 'dart:developer';
 
-import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:woofme/widgets/components/utils.dart';
@@ -130,7 +129,8 @@ class _LoginFormState extends State<LoginForm> {
           email: emailController.text.trim(),
           password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
-      log(e as String);
+      log(e.message!);
+      Utils.showSnackBar(e.message);
     }
   }
 }
