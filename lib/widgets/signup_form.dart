@@ -1,8 +1,10 @@
 import 'dart:developer';
 
+import 'package:email_validator/email_validator.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:woofme/widgets/components/utils.dart';
 
 import '../screens/update_user_info.dart';
 
@@ -51,12 +53,11 @@ class _SignUpFormState extends State<SignUpForm> {
                     textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: "Email"),
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your email';
-                      }
-                      return null;
-                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (email) =>
+                        email != null && !EmailValidator.validate(email)
+                            ? 'Please enter a valid email'
+                            : null,
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
@@ -65,12 +66,10 @@ class _SignUpFormState extends State<SignUpForm> {
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: "Password"),
                     obscureText: true,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a password';
-                      }
-                      return null;
-                    },
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) => value != null && value.length < 8
+                        ? 'Please enter a password of atleast 8 characters.'
+                        : null,
                   ),
                   const SizedBox(height: 15.0),
                   ElevatedButton.icon(
@@ -133,14 +132,17 @@ class _SignUpFormState extends State<SignUpForm> {
         'pic': '',
       });
       // Navigate to the update user info screen
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                UpdateUserInfoScreen(userDocId: userCredential.user!.email!)),
-      );
+      if (context.mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  UpdateUserInfoScreen(userDocId: userCredential.user!.email!)),
+        );
+      }
     } on FirebaseAuthException catch (e) {
       log(e.message!);
+      Utils.showSnackBar(e.message);
     }
   }
 }
