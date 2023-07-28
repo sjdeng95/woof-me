@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:woofme/screens/auth_page.dart';
+import 'package:woofme/screens/signin_screens/auth_page.dart';
 import 'package:woofme/widgets/public_navigation.dart';
 
 class LoginScreen extends StatefulWidget {

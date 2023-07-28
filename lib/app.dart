@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:woofme/screens/login_screen.dart';
+import 'package:woofme/screens/signin_screens/login_screen.dart';
 import 'package:woofme/widgets/components/utils.dart';
 
 class MyApp extends StatelessWidget {
