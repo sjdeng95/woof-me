@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:woofme/screens/signin_screens/auth_page.dart';
-import 'package:woofme/widgets/public_navigation.dart';
+import 'package:woofme/screens/signin_screens/verify_email_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -23,7 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
             } else if (snapshot.hasError) {
               return const Center(child: Text('Something went wrong...'));
             } else if (snapshot.hasData) {
-              return const PublicNavigation();
+              return const VerifyEmailScreen();
             } else {
               return const AuthPage();
             }

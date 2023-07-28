@@ -6,8 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:woofme/widgets/components/utils.dart';
 
-import '../screens/signin_screens/update_user_info.dart';
-
 class SignUpForm extends StatefulWidget {
   final VoidCallback onTapSignIn;
 
@@ -81,12 +79,6 @@ class _SignUpFormState extends State<SignUpForm> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         signUp();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'Please sign up with an email and password')),
-                        );
                       }
                     },
                   ),
@@ -132,14 +124,14 @@ class _SignUpFormState extends State<SignUpForm> {
         'pic': '',
       });
       // Navigate to the update user info screen
-      if (context.mounted) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  UpdateUserInfoScreen(userDocId: userCredential.user!.email!)),
-        );
-      }
+      // if (context.mounted) {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //         builder: (context) =>
+      //             UpdateUserInfoScreen(userDocId: userCredential.user!.email!)),
+      //   );
+      // }
     } on FirebaseAuthException catch (e) {
       log(e.message!);
       Utils.showSnackBar(e.message);

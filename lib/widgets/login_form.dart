@@ -115,10 +115,6 @@ class _LoginFormState extends State<LoginForm> {
                   ),
                   const SizedBox(height: 20.0),
                   GestureDetector(
-                      child: const Text('Forget Username?', style: linkStyle),
-                      onTap: () {}),
-                  const SizedBox(height: 10.0),
-                  GestureDetector(
                       child: const Text('Forget Password?', style: linkStyle),
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const ForgotPasswordScreen()))),
