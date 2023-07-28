@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:woofme/widgets/components/utils.dart';
 
-import '../screens/update_user_info.dart';
+import '../screens/signin_screens/update_user_info.dart';
 
 class SignUpForm extends StatefulWidget {
   final VoidCallback onTapSignIn;

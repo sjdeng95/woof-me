@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:woofme/screens/signin_screens/forgot_password_screen.dart';
 import 'package:woofme/widgets/components/utils.dart';
 
 class LoginForm extends StatefulWidget {
@@ -119,7 +120,8 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(height: 10.0),
                   GestureDetector(
                       child: const Text('Forget Password?', style: linkStyle),
-                      onTap: () {}),
+                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const ForgotPasswordScreen()))),
                 ])));
   }
 

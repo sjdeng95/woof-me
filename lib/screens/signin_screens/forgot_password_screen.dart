@@ -1,6 +1,8 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:woofme/widgets/components/utils.dart';
 
 class ForgotPasswordScreen extends StatefulWidget {
   const ForgotPasswordScreen({super.key});
@@ -53,8 +55,35 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                         ),
                         icon: const Icon(Icons.email_rounded, size: 30),
                         label: const Text('Reset Password', style: optionStyle),
-                        onPressed: () {},
+                        onPressed: () {
+                          resetPassword();
+                        },
                       ),
                     ]))));
+  }
+
+  Future resetPassword() async {
+    try {
+      showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (context) =>
+              const Center(child: CircularProgressIndicator()));
+
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: emailController.text.trim());
+
+      Utils.showSnackBar('Password Reset Email Sent');
+      if (context.mounted) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      }
+    } on FirebaseAuthException catch (e) {
+      log(e.message!);
+
+      Utils.showSnackBar(e.message);
+      if (context.mounted) {
+        Navigator.of(context).pop();
+      }
+    }
   }
 }
