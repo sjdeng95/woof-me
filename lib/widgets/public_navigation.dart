@@ -31,7 +31,7 @@ class PublicNavigation extends StatelessWidget {
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.favorite_border_rounded),
-          title: ("Favorite"),
+          title: ("Favorites"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),
@@ -56,7 +56,7 @@ class PublicNavigation extends StatelessWidget {
         ),
         PersistentBottomNavBarItem(
           icon: const Icon(Icons.settings_outlined),
-          title: ("Setting"),
+          title: ("Settings"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),
