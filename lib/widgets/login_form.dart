@@ -69,11 +69,9 @@ class _LoginFormState extends State<LoginForm> {
                     textInputAction: TextInputAction.next,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: "Email"),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (email) =>
-                        email != null && EmailValidator.validate(email)
-                            ? 'Enter a valid email'
-                            : null,
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please enter your email'
+                        : null,
                   ),
                   const SizedBox(height: 10.0),
                   TextFormField(
@@ -82,9 +80,8 @@ class _LoginFormState extends State<LoginForm> {
                     obscureText: true,
                     decoration: const InputDecoration(
                         border: OutlineInputBorder(), labelText: "Password"),
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    validator: (value) => value != null && value.length < 8
-                        ? 'Your password must be atleast 8 characters long.'
+                    validator: (value) => value == null || value.isEmpty
+                        ? 'Please enter your email'
                         : null,
                   ),
                   const SizedBox(height: 15.0),
@@ -134,7 +131,6 @@ class _LoginFormState extends State<LoginForm> {
           password: passwordController.text.trim());
     } on FirebaseAuthException catch (e) {
       log(e as String);
-      // Utils.showSnackBar(e.message);
     }
   }
 }
@@ -146,4 +142,4 @@ class _LoginFormState extends State<LoginForm> {
 //   width: 200,
 //   height: 200,
 //   fit: BoxFit.contain,
-// ),
+// )
