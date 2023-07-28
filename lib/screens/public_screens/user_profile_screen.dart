@@ -62,7 +62,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: const Text('Profile Page'),
+        title: const Text('My Profile'),
         backgroundColor: Colors.blue,
       ),
       body: StreamBuilder<DocumentSnapshot>(
