@@ -75,7 +75,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         story: snapshot.data!['story'],
                         pic: snapshot.data!['pic']
                     );
-                    return _buildPet(context, pet);
+                    return _buildPet(context, pet, likedPetsIds[index]);
                   });
             },
           );
@@ -84,8 +84,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-
-  Widget _buildPet(BuildContext context, PetInfo pet) {
+  Widget _buildPet(BuildContext context, PetInfo pet, String petId) {
     return Card(
       child: ListTile(
         leading: SizedBox(
@@ -100,9 +99,46 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         subtitle: Row(
           children: [Text('${pet.type} - ${pet.breed}')],
         ),
-        trailing: SizedBox(
-            height: double.infinity,
-            child: petStatus(status: pet.availability!)),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Confirm"),
+                      // ask if user wants to remove pet from favorites. include pet name
+                      content: Text("Are you sure you want to remove ${pet.name} from your favorites?"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text("CANCEL"),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Dismiss dialog
+                          },
+                        ),
+                        TextButton(
+                          child: const Text("REMOVE"),
+                          onPressed: () {
+                            // Your method of removing pet from favorites
+                            _usersCollectionRef.doc(currentUser.email).update({
+                              'liked_pets': FieldValue.arrayRemove([petId])
+                            });
+                            Navigator.of(context).pop(); // Dismiss dialog
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+
+            petStatus(status: pet.availability!)
+          ],
+        ),
         isThreeLine: true,
         onTap: () {
           Navigator.push(
