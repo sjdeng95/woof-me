@@ -1,5 +1,5 @@
 class PetInfo {
-  int? petId;
+  String? petId;
   String? name;
   String? pic;
   int? age;

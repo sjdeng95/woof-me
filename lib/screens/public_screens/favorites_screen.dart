@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:woofme/screens/public_screens/pet_profile.dart';
 
 import '../../models/pet_info.dart';
+import '../../utils/misc_functions.dart';
+import '../../utils/pet_status.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -59,7 +61,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                       );
                     }
                     if (!snapshot.hasData || !snapshot.data!.exists) {
-                      // delete from liked pets if pet doesn't exist
+                      // Delete from liked pets if pet document doesn't exist
                       _usersCollectionRef.doc(currentUser.email).update({
                         'liked_pets': FieldValue.arrayRemove([likedPetsIds[index]])
                       });
@@ -110,7 +112,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: const Text("Confirm"),
-                      // ask if user wants to remove pet from favorites. include pet name
                       content: Text("Are you sure you want to remove ${pet.name} from your favorites?"),
                       actions: <Widget>[
                         TextButton(
@@ -122,7 +123,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         TextButton(
                           child: const Text("REMOVE"),
                           onPressed: () {
-                            // Your method of removing pet from favorites
                             _usersCollectionRef.doc(currentUser.email).update({
                               'liked_pets': FieldValue.arrayRemove([petId])
                             });
@@ -148,27 +148,5 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         },
       ),
     );
-  }
-
-  Icon petStatus({required String status}) {
-    if (status == 'Available') {
-      return const Icon(Icons.check_circle, color: Colors.green);
-    } else if (status == 'Not Available') {
-      return const Icon(Icons.not_interested, color: Colors.red);
-    } else if (status == 'Pending') {
-      return const Icon(Icons.pending_outlined, color: Colors.deepOrange);
-    } else if (status == 'Adopted') {
-      return const Icon(Icons.done_all, color: Colors.blue);
-    } else {
-      return const Icon(Icons.question_mark, color: Colors.grey);
-    }
-  }
-
-  String capitalize(String input) {
-    if (input.isEmpty) return '';
-    return input
-        .split(' ')
-        .map((word) => word.substring(0, 1).toUpperCase() + word.substring(1))
-        .join(' ');
   }
 }
