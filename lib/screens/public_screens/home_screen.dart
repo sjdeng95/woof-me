@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import 'package:woofme/models/pet_info.dart';
 import 'package:woofme/models/all_pets.dart';
 import 'package:woofme/screens/public_screens/pet_profile.dart';
+
+import '../../utils/misc_functions.dart';
+import '../../utils/pet_status.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -80,20 +82,6 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Icon petStatus({required String status}) {
-    if (status == 'Available') {
-      return const Icon(Icons.check_circle, color: Colors.green);
-    } else if (status == 'Not Available') {
-      return const Icon(Icons.not_interested, color: Colors.red);
-    } else if (status == 'Pending') {
-      return const Icon(Icons.pending_outlined, color: Colors.deepOrange);
-    } else if (status == 'Adopted') {
-      return const Icon(Icons.done_all, color: Colors.blue);
-    } else {
-      return const Icon(Icons.question_mark, color: Colors.grey);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     // final user = FirebaseAuth.instance.currentUser!;
@@ -108,12 +96,4 @@ class _HomeScreenState extends State<HomeScreen> {
               _buildPet(context, allPets.pets[index]),
         ));
   }
-}
-
-String capitalize(String input) {
-  if (input.isEmpty) return '';
-  return input
-      .split(' ')
-      .map((word) => word.substring(0, 1).toUpperCase() + word.substring(1))
-      .join(' ');
 }

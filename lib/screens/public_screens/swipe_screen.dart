@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:appinio_swiper/appinio_swiper.dart';
 import 'package:woofme/models/pet_info.dart';
@@ -6,6 +7,8 @@ import 'package:woofme/models/all_pets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:woofme/screens/public_screens/pet_profile.dart';
 import 'package:woofme/widgets/pet_info_basic.dart';
+
+import '../../utils/misc_functions.dart';
 
 class SwipeScreen extends StatefulWidget {
   const SwipeScreen({super.key});
@@ -15,14 +18,12 @@ class SwipeScreen extends StatefulWidget {
 }
 
 class _SwipeScreenState extends State<SwipeScreen> {
-  // static const TextStyle optionStyle =
-  //     TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
   AllPets allPets = AllPets();
-
   PetInfo pet = PetInfo();
 
   final AppinioSwiperController controller = AppinioSwiperController();
+  final CollectionReference _usersCollectionRef = FirebaseFirestore.instance.collection('Users');
+  final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
   void initState() {
@@ -30,15 +31,21 @@ class _SwipeScreenState extends State<SwipeScreen> {
     getData();
   }
 
-  final _collectionRef = FirebaseFirestore.instance
-      .collection('pets')
-      .where('availability', isEqualTo: "Available");
-
   Future<void> getData() async {
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+    DocumentSnapshot userDoc = await _usersCollectionRef.doc(currentUser.email).get();
+    List<String> likedPetsIds = List<String>.from(userDoc['liked_pets']);
+    List<String> dislikedPetsIds = List<String>.from(userDoc['disliked_pets']);
 
-    final petInfo = querySnapshot.docs.map((doc) {
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('pets')
+        .where('availability', whereIn: ["Available", "Pending"])
+        .get();
+
+    final petInfo = querySnapshot.docs.where((doc) {
+      return !likedPetsIds.contains(doc.id) && !dislikedPetsIds.contains(doc.id);
+    }).map((doc) {
       return PetInfo(
+          petId: doc.id,
           name: doc['name'],
           type: capitalize(doc['type']),
           breed: capitalize(doc['breed']),
@@ -49,6 +56,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
           story: doc['story'],
           pic: doc['pic']);
     }).toList();
+
     setState(() {
       allPets = AllPets(pets: petInfo);
       pet = allPets.pets[0];
@@ -87,7 +95,6 @@ class _SwipeScreenState extends State<SwipeScreen> {
           label: const Text('Dislike', style: TextStyle(color: Colors.black)),
           onPressed: () {
             controller.swipeLeft();
-            // allPets.pets.removeWhere((pets) => pets.petId == petInfo.petId);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
@@ -101,6 +108,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
           label: const Text('Undo', style: TextStyle(color: Colors.black)),
           onPressed: () {
             controller.unswipe();
+            _unswipe(true);
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.white,
@@ -130,39 +138,99 @@ class _SwipeScreenState extends State<SwipeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Find Your Pawfect Match'),
-        ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            CupertinoPageScaffold(
-                child: SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.60,
-                    width: double.infinity,
-                    child: AppinioSwiper(
-                      cardsCount: allPets.numberOfPets,
-                      controller: controller,
-                      loop: true,
-                      padding: const EdgeInsets.all(0),
-                      cardsBuilder: (BuildContext context, int index) {
-                        // petId = allPets.pets[index].petId!;
-                        pet = allPets.pets[index];
-                        return buildPet(petInfo: allPets.pets[index]);
-                      },
-                    ))),
-            // add space between swipe cards and swipe options
-            const SizedBox(height: 70),
-            swipeOptions(petInfo: pet)
-          ],
-        ));
+      appBar: AppBar(
+        title: const Text('Find Your Pawfect Match'),
+      ),
+      body: StreamBuilder<DocumentSnapshot>(
+        stream: _usersCollectionRef.doc(currentUser.email).snapshots(),
+        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else {
+            List<String> likedPets = List<String>.from(snapshot.data!['liked_pets']);
+            List<String> dislikedPets = List<String>.from(snapshot.data!['disliked_pets']);
+            return FutureBuilder<QuerySnapshot>(
+              future: FirebaseFirestore.instance
+                  .collection('pets')
+                  .where('availability', whereIn: ["Available", "Pending"])
+                  .get(),
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> petSnapshot) {
+                if (petSnapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else {
+                  allPets = AllPets(pets: petSnapshot.data!.docs.where((doc) {
+                    return !likedPets.contains(doc.id) && !dislikedPets.contains(doc.id);
+                  }).map((doc) {
+                    return PetInfo(
+                        petId: doc.id,
+                        name: doc['name'],
+                        type: capitalize(doc['type']),
+                        breed: capitalize(doc['breed']),
+                        availability: doc['availability'],
+                        goodAnimals: doc['good_w_animals'],
+                        goodChildren: doc['good_w_children'],
+                        mustLeash: doc['must_leash'],
+                        story: doc['story'],
+                        pic: doc['pic']);
+                  }).toList());
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      CupertinoPageScaffold(
+                          child: SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.60,
+                              width: double.infinity,
+                              child: AppinioSwiper(
+                                cardsCount: allPets.numberOfPets,
+                                controller: controller,
+                                loop: true,
+                                padding: const EdgeInsets.all(0),
+                                onSwipe: (int index, AppinioSwiperDirection direction) {
+                                  lastPetId = pet.petId;
+                                  if (direction == AppinioSwiperDirection.left) {
+                                    _usersCollectionRef.doc(currentUser.email).update({
+                                      'disliked_pets': FieldValue.arrayUnion([pet.petId])
+                                    });
+                                  }
+                                  if (direction == AppinioSwiperDirection.right) {
+                                    _usersCollectionRef.doc(currentUser.email).update({
+                                      'liked_pets': FieldValue.arrayUnion([pet.petId])
+                                    });
+                                  }
+                                },
+                                unswipe: _unswipe,
+                                cardsBuilder: (BuildContext context, int index) {
+                                  pet = allPets.pets[index];
+                                  return buildPet(petInfo: allPets.pets[index]);
+                                },
+                              ))),
+
+                      const SizedBox(height: 70),
+                      swipeOptions(petInfo: pet)
+                    ],
+                  );
+                }
+              },
+            );
+          }
+        },
+      ),
+    );
+  }
+  String? lastPetId;
+
+  void _unswipe(bool unswiped) {
+    if (unswiped) {
+      if (lastPetId != null) {
+        _usersCollectionRef.doc(currentUser.email).update({
+          'liked_pets': FieldValue.arrayRemove([lastPetId!]),
+          'disliked_pets': FieldValue.arrayRemove([lastPetId!])
+        });
+        lastPetId = null;
+      }
+    } else {
+      debugPrint("FAIL: no card left to unswipe.");
+    }
   }
 }
 
-String capitalize(String input) {
-  if (input.isEmpty) return '';
-  return input
-      .split(' ')
-      .map((word) => word.substring(0, 1).toUpperCase() + word.substring(1))
-      .join(' ');
-}

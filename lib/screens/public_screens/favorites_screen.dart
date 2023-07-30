@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:woofme/screens/public_screens/pet_profile.dart';
 
 import '../../models/pet_info.dart';
+import '../../utils/misc_functions.dart';
+import '../../utils/pet_status.dart';
 
 class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
@@ -59,7 +61,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                       );
                     }
                     if (!snapshot.hasData || !snapshot.data!.exists) {
-                      // delete from liked pets if pet doesn't exist
+                      // Delete from liked pets if pet document doesn't exist
                       _usersCollectionRef.doc(currentUser.email).update({
                         'liked_pets': FieldValue.arrayRemove([likedPetsIds[index]])
                       });
@@ -75,7 +77,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         story: snapshot.data!['story'],
                         pic: snapshot.data!['pic']
                     );
-                    return _buildPet(context, pet);
+                    return _buildPet(context, pet, likedPetsIds[index]);
                   });
             },
           );
@@ -84,8 +86,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
     );
   }
 
-
-  Widget _buildPet(BuildContext context, PetInfo pet) {
+  Widget _buildPet(BuildContext context, PetInfo pet, String petId) {
     return Card(
       child: ListTile(
         leading: SizedBox(
@@ -100,9 +101,44 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         subtitle: Row(
           children: [Text('${pet.type} - ${pet.breed}')],
         ),
-        trailing: SizedBox(
-            height: double.infinity,
-            child: petStatus(status: pet.availability!)),
+        trailing: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.delete, color: Colors.red),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Confirm"),
+                      content: Text("Are you sure you want to remove ${pet.name} from your favorites?"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text("CANCEL"),
+                          onPressed: () {
+                            Navigator.of(context).pop(); // Dismiss dialog
+                          },
+                        ),
+                        TextButton(
+                          child: const Text("REMOVE"),
+                          onPressed: () {
+                            _usersCollectionRef.doc(currentUser.email).update({
+                              'liked_pets': FieldValue.arrayRemove([petId])
+                            });
+                            Navigator.of(context).pop(); // Dismiss dialog
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+            ),
+
+            petStatus(status: pet.availability!)
+          ],
+        ),
         isThreeLine: true,
         onTap: () {
           Navigator.push(
@@ -112,27 +148,5 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
         },
       ),
     );
-  }
-
-  Icon petStatus({required String status}) {
-    if (status == 'Available') {
-      return const Icon(Icons.check_circle, color: Colors.green);
-    } else if (status == 'Not Available') {
-      return const Icon(Icons.not_interested, color: Colors.red);
-    } else if (status == 'Pending') {
-      return const Icon(Icons.pending_outlined, color: Colors.deepOrange);
-    } else if (status == 'Adopted') {
-      return const Icon(Icons.done_all, color: Colors.blue);
-    } else {
-      return const Icon(Icons.question_mark, color: Colors.grey);
-    }
-  }
-
-  String capitalize(String input) {
-    if (input.isEmpty) return '';
-    return input
-        .split(' ')
-        .map((word) => word.substring(0, 1).toUpperCase() + word.substring(1))
-        .join(' ');
   }
 }
