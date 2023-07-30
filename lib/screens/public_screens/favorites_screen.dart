@@ -56,9 +56,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   future: _petsCollectionRef.doc(likedPetsIds[index]).get(),
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: CircularProgressIndicator(),
-                      );
+                      return const Center();
                     }
                     if (!snapshot.hasData || !snapshot.data!.exists) {
                       // Delete from liked pets if pet document doesn't exist
