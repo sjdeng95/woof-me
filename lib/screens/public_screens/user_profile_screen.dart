@@ -6,7 +6,9 @@ import 'package:woofme/widgets/components/check_box.dart';
 import '../../utils/image_upload.dart';
 
 class UserProfileScreen extends StatefulWidget {
-  const UserProfileScreen({super.key});
+  final String? email;
+
+  const UserProfileScreen({super.key,this.email});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -17,6 +19,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   // all users
   final userCollection = FirebaseFirestore.instance.collection('Users');
+
+  String get email => widget.email ?? currentUser.email!;
 
   // edit field
   Future<void> editField(String field) async {
@@ -68,7 +72,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
               .collection("Users")
-              .doc(currentUser.email)
+              .doc(email)
               .snapshots(),
           builder: (context, snapshot) {
             // get user data
