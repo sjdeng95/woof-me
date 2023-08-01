@@ -48,7 +48,6 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(
                     height: 40,
                   ),
-                  // TODO: update ICON later
                   const Icon(
                     Icons.pets,
                     size: 70,

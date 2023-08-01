@@ -24,8 +24,8 @@ class AdminNavigation extends StatelessWidget {
     List<PersistentBottomNavBarItem> navBarsItems() {
       return [
         PersistentBottomNavBarItem(
-          icon: const Icon(Icons.home),
-          title: ("Home"),
+          icon: const Icon(Icons.pets),
+          title: ("All Pets"),
           activeColorPrimary: Colors.blue,
           inactiveColorPrimary: Colors.grey,
         ),
@@ -42,7 +42,7 @@ class AdminNavigation extends StatelessWidget {
           ),
           title: ("New Pet"),
           inactiveIcon: const Icon(
-            Icons.pets_outlined,
+            Icons.add,
             color: Colors.white,
           ),
           activeColorPrimary: Colors.blue,
