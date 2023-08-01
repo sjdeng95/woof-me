@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:woofme/widgets/components/text_box.dart';
 import 'package:woofme/widgets/components/check_box.dart';
-import '../../widgets/components/image_upload.dart';
+import '../../utils/image_upload.dart';
 
 class UserProfileScreen extends StatefulWidget {
   const UserProfileScreen({super.key});
