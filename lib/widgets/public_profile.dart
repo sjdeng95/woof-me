@@ -122,7 +122,6 @@ class PublicProfile extends StatelessWidget {
 
           const SizedBox(height: 10),
 
-          // TODO change with current pets 
 
 
         ]);
