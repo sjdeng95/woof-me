@@ -28,11 +28,13 @@ class _SignUpFormState extends State<SignUpForm> {
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final fullNameController = TextEditingController();
 
   @override
   void dispose() {
     emailController.dispose();
     passwordController.dispose();
+    fullNameController.dispose();
     super.dispose();
   }
 
@@ -46,6 +48,16 @@ class _SignUpFormState extends State<SignUpForm> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  TextFormField(
+                    controller: fullNameController,
+                    textInputAction: TextInputAction.next,
+                    decoration: const InputDecoration(
+                        border: OutlineInputBorder(), labelText: "Full Name"),
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (name) =>
+                        name == null ? 'Please enter your full name' : null,
+                  ),
+                  const SizedBox(height: 10.0),
                   TextFormField(
                     controller: emailController,
                     textInputAction: TextInputAction.next,
@@ -119,7 +131,7 @@ class _SignUpFormState extends State<SignUpForm> {
         'like_type': '',
         'liked_pets': [],
         'disliked_pets': [],
-        'name': '',
+        'name': fullNameController.text,
         'phone': '',
         'pic': '',
       });
