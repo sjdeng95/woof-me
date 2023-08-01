@@ -32,26 +32,33 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('pets');
 
-  Future<void> getData() async {
-    QuerySnapshot querySnapshot = await _collectionRef.get();
+Future<void> getData() async {
+  QuerySnapshot querySnapshot = await _collectionRef.get();
 
-    final petInfo = querySnapshot.docs.map((doc) {
-      return PetInfo(
-          name: doc['name'],
-          type: capitalize(doc['type']),
-          breed: capitalize(doc['breed']),
-          availability: doc['availability'],
-          goodAnimals: doc['good_w_animals'],
-          goodChildren: doc['good_w_children'],
-          mustLeash: doc['must_leash'],
-          story: doc['story'],
-          pic: doc['pic']);
-    }).toList();
-    setState(() {
-      allPets = AllPets(pets: petInfo);
+  final petInfo = querySnapshot.docs.map((doc) {
+    Map<String, dynamic> data = doc.data() as Map<String, dynamic>; // Convert document snapshot into a Map
+
+    return PetInfo(
+        name: data['name'] ?? '',
+        type: capitalize(data['type'] ?? ''),
+        breed: capitalize(data['breed'] ?? ''),
+        availability: data['availability'] ?? 'Unavailable',
+        goodAnimals: data['good_w_animals'] ?? false,
+        goodChildren: data['good_w_children'] ?? false,
+        mustLeash: data['must_leash'] ?? false,
+        story: data['story'] ?? '',
+        pic: data['pic'] ?? '');
+  }).toList();
+
+  setState(() {
+    allPets = AllPets(pets: petInfo);
+    if (allPets.pets.isNotEmpty) {
       pet = allPets.pets[0];
-    });
-  }
+    }
+  });
+}
+
+
 
   Widget _buildPet(BuildContext context, PetInfo pet) {
     return Card(

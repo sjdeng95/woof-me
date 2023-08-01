@@ -11,6 +11,7 @@ class UserInfo {
   bool? likeGoodChildren;
   bool? likeMustLeash;
   String? pic;
+  String? bio;
   List<String>? likedPets;
   List<String>? dislikedPets;
 
@@ -28,6 +29,7 @@ class UserInfo {
       this.likeGoodChildren,
       this.likeMustLeash,
       this.pic,
+      this.bio,
       this.likedPets,
       this.dislikedPets});
 }

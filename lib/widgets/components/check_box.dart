@@ -14,18 +14,18 @@ class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
   final userCollection = FirebaseFirestore.instance.collection('Users');
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  bool like_good_w_animals = false;
-  bool like_good_w_children = false;
-  bool like_must_leash = false;
+  bool goodWithAnimals = false;
+  bool goodWithChildren = false;
+  bool likeLeash = false;
   
   @override
   void initState() {
     super.initState();
     getUserPreferences().then((userData) {
       setState(() {
-        like_good_w_animals = userData['like_good_w_animals'];
-        like_good_w_children = userData['like_good_w_children'];
-        like_must_leash = userData['like_must_leash'];
+        goodWithAnimals = userData['like_good_w_animals'];
+        goodWithChildren = userData['like_good_w_children'];
+        likeLeash = userData['like_must_leash'];
       });
     });
   }
@@ -56,34 +56,34 @@ class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CheckboxListTile(
-            value: like_good_w_animals,
+            value: goodWithAnimals,
             onChanged: (bool? value) {
               setState(() {
-                like_good_w_animals = value!;
+                goodWithAnimals = value!;
               });
-              updateField('like_good_w_animals', like_good_w_animals);
+              updateField('like_good_w_animals', goodWithAnimals);
             },
             title: const Text('Good With Other Animals'),
           ),
           const Divider(height: 0),
           CheckboxListTile(
-            value: like_good_w_children,
+            value: goodWithChildren,
             onChanged: (bool? value) {
               setState(() {
-                like_good_w_children = value!;
+                goodWithChildren = value!;
               });
-              updateField('like_good_w_children', like_good_w_children);
+              updateField('like_good_w_children', goodWithChildren);
             },
             title: const Text('Good With Children'),
           ),
           const Divider(height: 0),
           CheckboxListTile(
-            value: like_must_leash,
+            value: likeLeash,
             onChanged: (bool? value) {
               setState(() {
-                like_must_leash = value!;
+                likeLeash = value!;
               });
-              updateField('like_must_leash', like_must_leash);
+              updateField('like_must_leash', likeLeash);
             },
             title: const Text('Pets Leashed At All Times'),
           ),
