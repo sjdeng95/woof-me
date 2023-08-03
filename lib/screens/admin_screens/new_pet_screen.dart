@@ -58,7 +58,8 @@ class _NewPetScreenState extends State<NewPetScreen> {
   @override
   void initState() {
     super.initState();
-    _picController.text = 'https://firebasestorage.googleapis.com/v0/b/woofme-467.appspot.com/o/DEFAULT%20EMPTY%20PICTURE%2FIMG_5468.png?alt=media&token=a3db9515-f0ec-4ead-9973-ee10f4fb37d7';
+    _picController.text =
+        'https://firebasestorage.googleapis.com/v0/b/woofme-467.appspot.com/o/DEFAULT%20EMPTY%20PICTURE%2FIMG_5468.png?alt=media&token=a3db9515-f0ec-4ead-9973-ee10f4fb37d7';
   }
 
   @override
@@ -85,7 +86,6 @@ class _NewPetScreenState extends State<NewPetScreen> {
                         fallbackWidth: 100,
                         fallbackHeight: 100,
                       ),
-
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(labelText: 'Pet Name'),
@@ -121,18 +121,18 @@ class _NewPetScreenState extends State<NewPetScreen> {
                   controller: _breedController,
                   decoration: const InputDecoration(labelText: 'Breed'),
                 ),
-
                 TextFormField(
                   controller: _storyController,
                   decoration: const InputDecoration(labelText: 'Story'),
                 ),
                 TextFormField(
-                  controller: _picController, 
+                  controller: _picController,
                   decoration: const InputDecoration(labelText: 'Image URL'),
                 ),
                 CheckboxListTile(
                   title: const Text('Good with Animals'),
                   value: _goodAnimals,
+                  activeColor: Colors.green,
                   onChanged: (bool? value) {
                     setState(() {
                       _goodAnimals = value ?? false;
@@ -142,6 +142,7 @@ class _NewPetScreenState extends State<NewPetScreen> {
                 CheckboxListTile(
                   title: const Text('Good with Children'),
                   value: _goodChildren,
+                  activeColor: Colors.green,
                   onChanged: (bool? value) {
                     setState(() {
                       _goodChildren = value ?? false;
@@ -151,6 +152,7 @@ class _NewPetScreenState extends State<NewPetScreen> {
                 CheckboxListTile(
                   title: const Text('Must Leash'),
                   value: _mustLeash,
+                  activeColor: Colors.green,
                   onChanged: (bool? value) {
                     setState(() {
                       _mustLeash = value ?? false;
@@ -201,7 +203,9 @@ class _NewPetScreenState extends State<NewPetScreen> {
                   onPressed: _addPet,
                   child: const Text('Add Pet'),
                 ),
-                const SizedBox(height: 30,),
+                const SizedBox(
+                  height: 30,
+                ),
               ],
             ),
           ),

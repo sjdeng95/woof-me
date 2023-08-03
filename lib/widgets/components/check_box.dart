@@ -10,14 +10,13 @@ class PreferencesCheckBox extends StatefulWidget {
 }
 
 class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
-
   final userCollection = FirebaseFirestore.instance.collection('Users');
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   bool goodWithAnimals = false;
   bool goodWithChildren = false;
   bool likeLeash = false;
-  
+
   @override
   void initState() {
     super.initState();
@@ -31,8 +30,9 @@ class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
   }
 
   Future<DocumentSnapshot> getUserPreferences() async {
-  return await userCollection.doc(currentUser.email).get();
-}
+    return await userCollection.doc(currentUser.email).get();
+  }
+
   Future<void> updateField(String field, bool value) {
     return userCollection.doc(currentUser.email).update({field: value});
   }
@@ -43,20 +43,22 @@ class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
       decoration: BoxDecoration(
         color: Colors.grey[200],
         borderRadius: BorderRadius.circular(8),
-        ),
-        padding: const EdgeInsets.only(
-          bottom: 15, 
-          left: 15,),
-        margin: const EdgeInsets.only(
-          left: 20,
-          right: 20,
-          top: 20,
-        ),
+      ),
+      padding: const EdgeInsets.only(
+        bottom: 15,
+        left: 15,
+      ),
+      margin: const EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 20,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CheckboxListTile(
             value: goodWithAnimals,
+            activeColor: Colors.green,
             onChanged: (bool? value) {
               setState(() {
                 goodWithAnimals = value!;
@@ -68,6 +70,7 @@ class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
           const Divider(height: 0),
           CheckboxListTile(
             value: goodWithChildren,
+            activeColor: Colors.green,
             onChanged: (bool? value) {
               setState(() {
                 goodWithChildren = value!;
@@ -79,6 +82,7 @@ class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
           const Divider(height: 0),
           CheckboxListTile(
             value: likeLeash,
+            activeColor: Colors.green,
             onChanged: (bool? value) {
               setState(() {
                 likeLeash = value!;
