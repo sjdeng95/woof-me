@@ -54,7 +54,7 @@ class _SignUpFormState extends State<SignUpForm> {
                     ),
                     Text(
                       "I woof you already!",
-                      style: Theme.of(context).textTheme.headlineSmall,
+                      style: Theme.of(context).textTheme.headlineMedium,
                       textAlign: TextAlign.center,
                     ),
                     const SizedBox(
