@@ -19,16 +19,19 @@ class PetInfoMore extends StatelessWidget {
         CheckboxListTile(
           title: const Text("Good with other animals"),
           value: petInfo!.goodAnimals,
+          activeColor: Colors.green,
           onChanged: (value) {},
         ),
         CheckboxListTile(
           title: const Text("Good with children"),
           value: petInfo!.goodChildren,
+          activeColor: Colors.green,
           onChanged: (value) {},
         ),
         CheckboxListTile(
           title: const Text("Must be on leash at all times"),
           value: petInfo!.mustLeash,
+          activeColor: Colors.green,
           onChanged: (value) {},
         ),
         const SizedBox(height: 15),
