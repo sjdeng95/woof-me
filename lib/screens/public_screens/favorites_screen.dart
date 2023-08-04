@@ -11,19 +11,18 @@ class FavoritesScreen extends StatefulWidget {
   const FavoritesScreen({super.key});
 
   @override
-  State<FavoritesScreen> createState() =>
-      _FavoritesScreenState();
+  State<FavoritesScreen> createState() => _FavoritesScreenState();
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   final CollectionReference _petsCollectionRef =
-  FirebaseFirestore.instance.collection('pets');
+      FirebaseFirestore.instance.collection('pets');
 
   final CollectionReference _usersCollectionRef =
-  FirebaseFirestore.instance.collection('Users');
+      FirebaseFirestore.instance.collection('Users');
 
   final currentUser = FirebaseAuth.instance.currentUser!;
 
@@ -61,7 +60,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                     if (!snapshot.hasData || !snapshot.data!.exists) {
                       // Delete from liked pets if pet document doesn't exist
                       _usersCollectionRef.doc(currentUser.email).update({
-                        'liked_pets': FieldValue.arrayRemove([likedPetsIds[index]])
+                        'liked_pets':
+                            FieldValue.arrayRemove([likedPetsIds[index]])
                       });
                     }
                     PetInfo pet = PetInfo(
@@ -73,8 +73,7 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                         goodChildren: snapshot.data!['good_w_children'],
                         mustLeash: snapshot.data!['must_leash'],
                         story: snapshot.data!['story'],
-                        pic: snapshot.data!['pic']
-                    );
+                        pic: snapshot.data!['pic']);
                     return _buildPet(context, pet, likedPetsIds[index]);
                   });
             },
@@ -95,9 +94,13 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
             ),
           ),
         ),
-        title: Text('${pet.name}', style: optionStyle),
+        title: Text('${pet.name}',
+            style: Theme.of(context).textTheme.headlineLarge),
         subtitle: Row(
-          children: [Text('${pet.type} - ${pet.breed}')],
+          children: [
+            Text('${pet.type} - ${pet.breed}',
+                style: Theme.of(context).textTheme.bodyMedium)
+          ],
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
@@ -110,7 +113,8 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                   builder: (BuildContext context) {
                     return AlertDialog(
                       title: const Text("Confirm"),
-                      content: Text("Are you sure you want to remove ${pet.name} from your favorites?"),
+                      content: Text(
+                          "Are you sure you want to remove ${pet.name} from your favorites?"),
                       actions: <Widget>[
                         TextButton(
                           child: const Text("CANCEL"),
@@ -133,7 +137,6 @@ class _FavoritesScreenState extends State<FavoritesScreen> {
                 );
               },
             ),
-
             petStatus(status: pet.availability!)
           ],
         ),

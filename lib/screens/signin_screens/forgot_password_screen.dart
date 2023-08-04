@@ -12,8 +12,6 @@ class ForgotPasswordScreen extends StatefulWidget {
 }
 
 class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
 
@@ -37,7 +35,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      const Text('Enter your email to reset your password:'),
+                      Text('Enter your email to reset your password:',
+                          style: Theme.of(context).textTheme.bodyMedium),
                       TextFormField(
                         controller: emailController,
                         textInputAction: TextInputAction.done,
@@ -55,7 +54,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                           minimumSize: const Size.fromHeight(50.0),
                         ),
                         icon: const Icon(Icons.email_rounded, size: 30),
-                        label: const Text('Reset Password', style: optionStyle),
+                        label: Text('Reset Password',
+                            style: Theme.of(context).textTheme.displayMedium),
                         onPressed: () {
                           resetPassword();
                         },

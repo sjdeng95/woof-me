@@ -18,12 +18,6 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-
-  static const TextStyle linkStyle = TextStyle(
-      fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueAccent);
-
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -56,8 +50,10 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(
                     height: 50,
                   ),
-                  const Text(
+                  Text(
                     "Welcome Back, Lets find your Paw-fect Match!",
+                    style: Theme.of(context).textTheme.headlineLarge,
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(
                     height: 20,
@@ -88,7 +84,8 @@ class _LoginFormState extends State<LoginForm> {
                       minimumSize: const Size.fromHeight(50.0),
                     ),
                     icon: const Icon(Icons.lock_open, size: 30),
-                    label: const Text('Sign In', style: optionStyle),
+                    label: Text('Sign In',
+                        style: Theme.of(context).textTheme.displayMedium),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         signIn();
@@ -105,15 +102,18 @@ class _LoginFormState extends State<LoginForm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('No Account? '),
+                      Text('No Account? ',
+                          style: Theme.of(context).textTheme.bodyMedium),
                       GestureDetector(
                           onTap: widget.onTapSignUp,
-                          child: const Text('Sign Up', style: linkStyle)),
+                          child: Text('Sign Up',
+                              style: Theme.of(context).textTheme.labelMedium)),
                     ],
                   ),
                   const SizedBox(height: 20.0),
                   GestureDetector(
-                      child: const Text('Forget Password?', style: linkStyle),
+                      child: Text('Forget Password?',
+                          style: Theme.of(context).textTheme.labelMedium),
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const ForgotPasswordScreen()))),
                 ])));

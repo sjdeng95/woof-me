@@ -17,19 +17,22 @@ class PetInfoMore extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         CheckboxListTile(
-          title: const Text("Good with other animals"),
+          title: Text("Good with other animals",
+              style: Theme.of(context).textTheme.headlineSmall),
           value: petInfo!.goodAnimals,
           activeColor: Colors.green,
           onChanged: (value) {},
         ),
         CheckboxListTile(
-          title: const Text("Good with children"),
+          title: Text("Good with children",
+              style: Theme.of(context).textTheme.headlineSmall),
           value: petInfo!.goodChildren,
           activeColor: Colors.green,
           onChanged: (value) {},
         ),
         CheckboxListTile(
-          title: const Text("Must be on leash at all times"),
+          title: Text("Must be on leash at all times",
+              style: Theme.of(context).textTheme.headlineSmall),
           value: petInfo!.mustLeash,
           activeColor: Colors.green,
           onChanged: (value) {},
@@ -41,7 +44,7 @@ class PetInfoMore extends StatelessWidget {
             height: 120,
             child: Text(
               '${petInfo!.story}',
-              style: const TextStyle(fontSize: 16),
+              style: Theme.of(context).textTheme.bodyMedium,
             ),
           ),
         ),

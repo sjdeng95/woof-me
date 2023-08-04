@@ -15,9 +15,6 @@ class AllUsersScreen extends StatefulWidget {
 }
 
 class _AllUsersScreenState extends State<AllUsersScreen> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
   AllUsers allUsers = AllUsers();
 
   UserInfo user = UserInfo();
@@ -60,19 +57,21 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
             ),
           ),
         ),
-        title: Text('${user.name}', style: optionStyle),
+        title: Text('${user.name}',
+            style: Theme.of(context).textTheme.headlineMedium),
         subtitle: Row(
-          children: [Text('Favorite Pet: ${user.likedType} - ${user.likedBreed}')],
+          children: [
+            Text('Saved Pets: ${user.likedPetsCount}'),
+          ],
         ),
-        trailing: SizedBox(
-            height: double.infinity,
-            child: Text( user.email!)),
+        trailing: SizedBox(height: double.infinity, child: Text(user.email!)),
         isThreeLine: true,
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: ((context) => UserProfileScreen(email:user.email))));
+                  builder: ((context) =>
+                      UserProfileScreen(email: user.email))));
         },
       ),
     );

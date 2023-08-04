@@ -14,9 +14,6 @@ class VerifyEmailScreen extends StatefulWidget {
 }
 
 class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-
   bool isEmailVerified = false;
   bool canResendEmail = false;
   Timer? timer;
@@ -102,7 +99,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                           children: [
                             Text(
                                 'Please verify your email. An email was sent to ${FirebaseAuth.instance.currentUser!.email}.',
-                                style: optionStyle,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
                                 textAlign: TextAlign.center),
                             const SizedBox(height: 30),
                             FilledButton.icon(
@@ -110,8 +108,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                                 minimumSize: const Size.fromHeight(50.0),
                               ),
                               icon: const Icon(Icons.email_rounded, size: 30),
-                              label: const Text('Resend Email',
-                                  style: optionStyle),
+                              label: Text('Resend Email',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .displayMedium),
                               onPressed: () => canResendEmail
                                   ? sendVerificationEmail()
                                   : null,
@@ -121,7 +121,10 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                               style: FilledButton.styleFrom(
                                 minimumSize: const Size.fromHeight(50.0),
                               ),
-                              child: const Text('Cancel', style: optionStyle),
+                              child: Text('Cancel',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall),
                               onPressed: () => FirebaseAuth.instance.signOut(),
                             ),
                           ])),

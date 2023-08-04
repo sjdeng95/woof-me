@@ -19,12 +19,6 @@ class SignUpForm extends StatefulWidget {
 }
 
 class _SignUpFormState extends State<SignUpForm> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-
-  static const TextStyle linkStyle = TextStyle(
-      fontSize: 15, fontWeight: FontWeight.w500, color: Colors.blueAccent);
-
   final _formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -48,6 +42,14 @@ class _SignUpFormState extends State<SignUpForm> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Text(
+                    "I woof you already!",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
                   TextFormField(
                     controller: fullNameController,
                     textInputAction: TextInputAction.next,
@@ -87,7 +89,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       minimumSize: const Size.fromHeight(50.0),
                     ),
                     icon: const Icon(Icons.arrow_forward_rounded, size: 30),
-                    label: const Text('Sign Up', style: optionStyle),
+                    label: Text('Sign Up',
+                        style: Theme.of(context).textTheme.displayMedium),
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         signUp();
@@ -98,10 +101,12 @@ class _SignUpFormState extends State<SignUpForm> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text('Already have an account?  '),
+                      Text('Already have an account?  ',
+                          style: Theme.of(context).textTheme.bodyMedium),
                       GestureDetector(
                         onTap: widget.onTapSignIn,
-                        child: const Text('Sign In', style: linkStyle),
+                        child: Text('Sign In',
+                            style: Theme.of(context).textTheme.labelMedium),
                       ),
                     ],
                   ),

@@ -8,7 +8,7 @@ import '../../utils/image_upload.dart';
 class UserProfileScreen extends StatefulWidget {
   final String? email;
 
-  const UserProfileScreen({super.key,this.email});
+  const UserProfileScreen({super.key, this.email});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -35,7 +35,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           decoration: InputDecoration(
             hintText: "Enter new $field",
             contentPadding: const EdgeInsets.symmetric(vertical: 40.0),
-
           ),
           onChanged: (value) {
             newValue = value;
@@ -56,8 +55,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       ),
     );
     // update in firestore
-    if (newValue.trim().isNotEmpty){
-      await userCollection.doc(currentUser.email).update({field:newValue});
+    if (newValue.trim().isNotEmpty) {
+      await userCollection.doc(currentUser.email).update({field: newValue});
     }
   }
 
@@ -87,16 +86,17 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     alignment: Alignment.center,
                     child: InkWell(
                       onTap: () => editProfilePicture(context),
-                      child: userData['pic'] != null && userData['pic'].isNotEmpty
-                          ? ClipOval(
-                        child: Image.network(
-                          userData['pic'],
-                          width: 100,
-                          height: 100,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                          : const Icon(Icons.person, size: 72),
+                      child:
+                          userData['pic'] != null && userData['pic'].isNotEmpty
+                              ? ClipOval(
+                                  child: Image.network(
+                                    userData['pic'],
+                                    width: 100,
+                                    height: 100,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : const Icon(Icons.person, size: 72),
                     ),
                   ),
 
@@ -106,20 +106,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   Text(
                     userData['username'],
                     textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
 
                   // user email
                   Text(
                     currentUser.email!,
                     textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodyLarge,
                   ),
 
                   const SizedBox(height: 50),
 
                   //user details
-                  const Padding(
-                    padding: EdgeInsets.only(left: 25),
-                    child: Text("User Details"),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25),
+                    child: Text("User Details",
+                        style: Theme.of(context).textTheme.headlineSmall),
                   ),
 
                   TextBox(
@@ -154,18 +157,20 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     sectionName: 'Favorite Breed',
                     onPressed: () => editField('like_breed'),
                   ),
-                  
+
                   const SizedBox(height: 20),
 
-                  const Padding(
-                    padding: EdgeInsets.only(left: 25),
-                    child: Text("Pet Preferences"),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 25),
+                    child: Text("Pet Preferences",
+                        style: Theme.of(context).textTheme.headlineSmall),
                   ),
-                                   
+
                   const PreferencesCheckBox(),
 
-                  const SizedBox(height: 50,),
-
+                  const SizedBox(
+                    height: 50,
+                  ),
                 ],
               );
             } else if (snapshot.hasError) {

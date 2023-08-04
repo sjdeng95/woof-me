@@ -15,7 +15,6 @@ class UserInfo {
   List<String>? likedPets;
   List<String>? dislikedPets;
 
-
   UserInfo(
       {this.userId,
       this.name,
@@ -32,4 +31,6 @@ class UserInfo {
       this.bio,
       this.likedPets,
       this.dislikedPets});
+
+  int get likedPetsCount => likedPets?.length ?? 0;
 }

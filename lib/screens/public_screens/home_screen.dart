@@ -16,9 +16,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
   AllPets allPets = AllPets();
 
   PetInfo pet = PetInfo();
@@ -32,32 +29,32 @@ class _HomeScreenState extends State<HomeScreen> {
   final CollectionReference _collectionRef =
       FirebaseFirestore.instance.collection('pets');
 
+  Future<void> getData() async {
+    QuerySnapshot querySnapshot = await _collectionRef.get();
 
-Future<void> getData() async {
-  QuerySnapshot querySnapshot = await _collectionRef.get();
+    final petInfo = querySnapshot.docs.map((doc) {
+      Map<String, dynamic> data = doc.data()
+          as Map<String, dynamic>; // Convert document snapshot into a Map
 
-  final petInfo = querySnapshot.docs.map((doc) {
-    Map<String, dynamic> data = doc.data() as Map<String, dynamic>; // Convert document snapshot into a Map
+      return PetInfo(
+          name: data['name'] ?? '',
+          type: capitalize(data['type'] ?? ''),
+          breed: capitalize(data['breed'] ?? ''),
+          availability: data['availability'] ?? 'Unavailable',
+          goodAnimals: data['good_w_animals'] ?? false,
+          goodChildren: data['good_w_children'] ?? false,
+          mustLeash: data['must_leash'] ?? false,
+          story: data['story'] ?? '',
+          pic: data['pic'] ?? '');
+    }).toList();
 
-    return PetInfo(
-        name: data['name'] ?? '',
-        type: capitalize(data['type'] ?? ''),
-        breed: capitalize(data['breed'] ?? ''),
-        availability: data['availability'] ?? 'Unavailable',
-        goodAnimals: data['good_w_animals'] ?? false,
-        goodChildren: data['good_w_children'] ?? false,
-        mustLeash: data['must_leash'] ?? false,
-        story: data['story'] ?? '',
-        pic: data['pic'] ?? '');
-  }).toList();
-
-  setState(() {
-    allPets = AllPets(pets: petInfo);
-    if (allPets.pets.isNotEmpty) {
-      pet = allPets.pets[0];
-    }
-  });
-}
+    setState(() {
+      allPets = AllPets(pets: petInfo);
+      if (allPets.pets.isNotEmpty) {
+        pet = allPets.pets[0];
+      }
+    });
+  }
 
   Widget _buildPet(BuildContext context, PetInfo pet) {
     return Card(
@@ -70,9 +67,13 @@ Future<void> getData() async {
             ),
           ),
         ),
-        title: Text('${pet.name}', style: optionStyle),
+        title: Text('${pet.name}',
+            style: Theme.of(context).textTheme.headlineLarge),
         subtitle: Row(
-          children: [Text('${pet.type} - ${pet.breed}')],
+          children: [
+            Text('${pet.type} - ${pet.breed}',
+                style: Theme.of(context).textTheme.bodyMedium)
+          ],
         ),
         trailing: SizedBox(
             height: double.infinity,
