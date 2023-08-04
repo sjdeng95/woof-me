@@ -31,92 +31,110 @@ class _LoginFormState extends State<LoginForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-        key: _formKey,
-        child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  const Icon(
-                    Icons.pets,
-                    size: 70,
-                    color: Colors.blue,
-                  ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  Text(
-                    "Welcome Back, Lets find your Paw-fect Match!",
-                    style: Theme.of(context).textTheme.headlineLarge,
-                    textAlign: TextAlign.center,
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  TextFormField(
-                    controller: emailController,
-                    textInputAction: TextInputAction.next,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Email"),
-                    validator: (value) => value == null || value.isEmpty
-                        ? 'Please enter your email'
-                        : null,
-                  ),
-                  const SizedBox(height: 10.0),
-                  TextFormField(
-                    controller: passwordController,
-                    textInputAction: TextInputAction.done,
-                    obscureText: true,
-                    decoration: const InputDecoration(
-                        border: OutlineInputBorder(), labelText: "Password"),
-                    validator: (value) => value == null || value.isEmpty
-                        ? 'Please enter your email'
-                        : null,
-                  ),
-                  const SizedBox(height: 15.0),
-                  FilledButton.icon(
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50.0),
+    return Stack(children: <Widget>[
+      Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage('assets/images/pup1.jpg'),
+                  fit: BoxFit.fitHeight))),
+      Form(
+          key: _formKey,
+          child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 35,
                     ),
-                    icon: const Icon(Icons.lock_open, size: 30),
-                    label: Text('Sign In',
-                        style: Theme.of(context).textTheme.displayMedium),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        signIn();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'Please fill in your email and password')),
-                        );
-                      }
-                    },
-                  ),
-                  const SizedBox(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text('No Account? ',
-                          style: Theme.of(context).textTheme.bodyMedium),
-                      GestureDetector(
-                          onTap: widget.onTapSignUp,
-                          child: Text('Sign Up',
-                              style: Theme.of(context).textTheme.labelMedium)),
-                    ],
-                  ),
-                  const SizedBox(height: 20.0),
-                  GestureDetector(
-                      child: Text('Forget Password?',
-                          style: Theme.of(context).textTheme.labelMedium),
-                      onTap: () => Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const ForgotPasswordScreen()))),
-                ])));
+                    Text(
+                      "Welcome Back,",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    Text(
+                      "Lets find your Paw-fect Match!",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center,
+                    ),
+                    const Icon(
+                      Icons.pets,
+                      size: 30,
+                      color: Colors.blue,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    TextFormField(
+                      controller: emailController,
+                      textInputAction: TextInputAction.next,
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(),
+                          labelText: "Email"),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Please enter your email'
+                          : null,
+                    ),
+                    const SizedBox(height: 10.0),
+                    TextFormField(
+                      controller: passwordController,
+                      textInputAction: TextInputAction.done,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                          contentPadding: EdgeInsets.all(15),
+                          border: OutlineInputBorder(),
+                          labelText: "Password"),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      validator: (value) => value == null || value.isEmpty
+                          ? 'Please enter your email'
+                          : null,
+                    ),
+                    const SizedBox(height: 15.0),
+                    FilledButton.icon(
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50.0),
+                      ),
+                      icon: const Icon(Icons.lock_open, size: 30),
+                      label: Text('Sign In',
+                          style: Theme.of(context).textTheme.displayMedium),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          signIn();
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text(
+                                    'Please fill in your email and password')),
+                          );
+                        }
+                      },
+                    ),
+                    const SizedBox(height: 20.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text('No Account? ',
+                            style: Theme.of(context).textTheme.bodyMedium),
+                        GestureDetector(
+                            onTap: widget.onTapSignUp,
+                            child: Text('Sign Up',
+                                style:
+                                    Theme.of(context).textTheme.labelMedium)),
+                      ],
+                    ),
+                    const SizedBox(height: 20.0),
+                    GestureDetector(
+                        child: Text('Forget Password?',
+                            style: Theme.of(context).textTheme.labelMedium),
+                        onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const ForgotPasswordScreen()))),
+                  ]))),
+    ]);
   }
 
   Future signIn() async {
