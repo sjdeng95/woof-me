@@ -45,6 +45,8 @@ flutter:
     - 'assets/images/login_dog.gif'
     - 'assets/images/pup1.jpg'
     - 'assets/images/pup2.jpg'
+    - 'assets/images/pup3.jpg'
+    - 'assets/images/puppaw.png'
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

@@ -52,6 +52,12 @@ class _SignUpFormState extends State<SignUpForm> {
                     const SizedBox(
                       height: 30,
                     ),
+                    Image.asset(
+                      'assets/images/puppaw.png',
+                      width: 50,
+                      color: Colors.blue,
+                    ),
+                    const SizedBox(height: 10),
                     Text(
                       "I woof you already!",
                       style: Theme.of(context).textTheme.headlineMedium,
@@ -64,6 +70,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       controller: fullNameController,
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromRGBO(255, 255, 255, 0.25),
                           contentPadding: EdgeInsets.all(15),
                           border: OutlineInputBorder(),
                           labelText: "Full Name"),
@@ -77,6 +85,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       controller: emailController,
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromRGBO(255, 255, 255, 0.25),
                           contentPadding: EdgeInsets.all(15),
                           border: OutlineInputBorder(),
                           labelText: "Email"),
@@ -92,6 +102,8 @@ class _SignUpFormState extends State<SignUpForm> {
                       controller: passwordController,
                       textInputAction: TextInputAction.done,
                       decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromRGBO(255, 255, 255, 0.25),
                           contentPadding: EdgeInsets.all(15),
                           border: OutlineInputBorder(),
                           labelText: "Password"),

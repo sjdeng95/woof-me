@@ -70,6 +70,8 @@ class _LoginFormState extends State<LoginForm> {
                       controller: emailController,
                       textInputAction: TextInputAction.next,
                       decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromRGBO(255, 255, 255, 0.25),
                           contentPadding: EdgeInsets.all(15),
                           border: OutlineInputBorder(),
                           labelText: "Email"),
@@ -84,6 +86,8 @@ class _LoginFormState extends State<LoginForm> {
                       textInputAction: TextInputAction.done,
                       obscureText: true,
                       decoration: const InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromRGBO(255, 255, 255, 0.25),
                           contentPadding: EdgeInsets.all(15),
                           border: OutlineInputBorder(),
                           labelText: "Password"),
