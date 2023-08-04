@@ -199,9 +199,13 @@ class _NewPetScreenState extends State<NewPetScreen> {
                     });
                   },
                 ),
-                ElevatedButton(
+                FilledButton.icon(
+                  style: FilledButton.styleFrom(
+                    minimumSize: const Size.fromHeight(50.0),
+                  ),
+                  icon: const Icon(Icons.save_alt_rounded),
                   onPressed: _addPet,
-                  child: const Text('Add Pet'),
+                  label: const Text('Add Pet'),
                 ),
                 const SizedBox(
                   height: 30,

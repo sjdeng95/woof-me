@@ -82,8 +82,8 @@ class _SignUpFormState extends State<SignUpForm> {
                         : null,
                   ),
                   const SizedBox(height: 15.0),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
+                  FilledButton.icon(
+                    style: FilledButton.styleFrom(
                       minimumSize: const Size.fromHeight(50.0),
                     ),
                     icon: const Icon(Icons.arrow_forward_rounded, size: 30),
