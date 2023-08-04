@@ -65,7 +65,8 @@ class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
               });
               updateField('like_good_w_animals', goodWithAnimals);
             },
-            title: const Text('Good With Other Animals'),
+            title: Text('Good With Other Animals',
+                style: Theme.of(context).textTheme.bodyMedium),
           ),
           const Divider(height: 0),
           CheckboxListTile(
@@ -77,7 +78,8 @@ class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
               });
               updateField('like_good_w_children', goodWithChildren);
             },
-            title: const Text('Good With Children'),
+            title: Text('Good With Children',
+                style: Theme.of(context).textTheme.bodyMedium),
           ),
           const Divider(height: 0),
           CheckboxListTile(
@@ -89,7 +91,8 @@ class _PreferencesCheckBoxState extends State<PreferencesCheckBox> {
               });
               updateField('like_must_leash', likeLeash);
             },
-            title: const Text('Pets Leashed At All Times'),
+            title: Text('Pets Leashed At All Times',
+                style: Theme.of(context).textTheme.bodyMedium),
           ),
           const Divider(height: 0),
         ],

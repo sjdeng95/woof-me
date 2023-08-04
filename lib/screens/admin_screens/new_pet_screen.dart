@@ -86,9 +86,15 @@ class _NewPetScreenState extends State<NewPetScreen> {
                         fallbackWidth: 100,
                         fallbackHeight: 100,
                       ),
+                const SizedBox(height: 20),
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Pet Name'),
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(15),
+                      border: OutlineInputBorder(),
+                      labelText: "Pet Name"),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter pet name';
@@ -96,9 +102,15 @@ class _NewPetScreenState extends State<NewPetScreen> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: _ageController,
-                  decoration: const InputDecoration(labelText: 'Pet Age'),
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(15),
+                      border: OutlineInputBorder(),
+                      labelText: 'Pet Age'),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
@@ -107,9 +119,15 @@ class _NewPetScreenState extends State<NewPetScreen> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: _typeController,
-                  decoration: const InputDecoration(labelText: 'Pet Type'),
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(15),
+                      border: OutlineInputBorder(),
+                      labelText: 'Pet Type'),
+                  style: Theme.of(context).textTheme.bodyMedium,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter pet type';
@@ -117,20 +135,44 @@ class _NewPetScreenState extends State<NewPetScreen> {
                     return null;
                   },
                 ),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: _breedController,
-                  decoration: const InputDecoration(labelText: 'Breed'),
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(15),
+                      border: OutlineInputBorder(),
+                      labelText: 'Breed'),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: _storyController,
-                  decoration: const InputDecoration(labelText: 'Story'),
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(15),
+                      border: OutlineInputBorder(),
+                      labelText: 'Story'),
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
+                const SizedBox(height: 15),
                 TextFormField(
                   controller: _picController,
-                  decoration: const InputDecoration(labelText: 'Image URL'),
+                  textInputAction: TextInputAction.next,
+                  decoration: const InputDecoration(
+                      contentPadding: EdgeInsets.all(15),
+                      border: OutlineInputBorder(),
+                      labelText: 'Image URL'),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 20),
+                Text(
+                  'Pet Disposition',
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 CheckboxListTile(
-                  title: const Text('Good with Animals'),
+                  title: Text('Good with Animals',
+                      style: Theme.of(context).textTheme.bodyMedium),
                   value: _goodAnimals,
                   activeColor: Colors.green,
                   onChanged: (bool? value) {
@@ -140,7 +182,8 @@ class _NewPetScreenState extends State<NewPetScreen> {
                   },
                 ),
                 CheckboxListTile(
-                  title: const Text('Good with Children'),
+                  title: Text('Good with Children',
+                      style: Theme.of(context).textTheme.bodyMedium),
                   value: _goodChildren,
                   activeColor: Colors.green,
                   onChanged: (bool? value) {
@@ -150,7 +193,8 @@ class _NewPetScreenState extends State<NewPetScreen> {
                   },
                 ),
                 CheckboxListTile(
-                  title: const Text('Must Leash'),
+                  title: Text('Must Leash',
+                      style: Theme.of(context).textTheme.bodyMedium),
                   value: _mustLeash,
                   activeColor: Colors.green,
                   onChanged: (bool? value) {
@@ -159,8 +203,15 @@ class _NewPetScreenState extends State<NewPetScreen> {
                     });
                   },
                 ),
+                const SizedBox(height: 20),
+                Text(
+                  'Availability',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                const SizedBox(height: 10),
                 RadioListTile<String>(
-                  title: const Text('Available'),
+                  title: Text('Available',
+                      style: Theme.of(context).textTheme.bodyMedium),
                   value: 'Available',
                   groupValue: _availability,
                   onChanged: (String? value) {
@@ -170,7 +221,8 @@ class _NewPetScreenState extends State<NewPetScreen> {
                   },
                 ),
                 RadioListTile<String>(
-                  title: const Text('Not Available'),
+                  title: Text('Not Available',
+                      style: Theme.of(context).textTheme.bodyMedium),
                   value: 'Not Available',
                   groupValue: _availability,
                   onChanged: (String? value) {
@@ -180,7 +232,8 @@ class _NewPetScreenState extends State<NewPetScreen> {
                   },
                 ),
                 RadioListTile<String>(
-                  title: const Text('Pending'),
+                  title: Text('Pending',
+                      style: Theme.of(context).textTheme.bodyMedium),
                   value: 'Pending',
                   groupValue: _availability,
                   onChanged: (String? value) {
@@ -190,7 +243,8 @@ class _NewPetScreenState extends State<NewPetScreen> {
                   },
                 ),
                 RadioListTile<String>(
-                  title: const Text('Adopted'),
+                  title: Text('Adopted',
+                      style: Theme.of(context).textTheme.bodyMedium),
                   value: 'Adopted',
                   groupValue: _availability,
                   onChanged: (String? value) {
@@ -199,13 +253,15 @@ class _NewPetScreenState extends State<NewPetScreen> {
                     });
                   },
                 ),
+                const SizedBox(height: 20),
                 FilledButton.icon(
                   style: FilledButton.styleFrom(
                     minimumSize: const Size.fromHeight(50.0),
                   ),
                   icon: const Icon(Icons.save_alt_rounded),
                   onPressed: _addPet,
-                  label: const Text('Add Pet'),
+                  label: Text('Add Pet',
+                      style: Theme.of(context).textTheme.displayMedium),
                 ),
                 const SizedBox(
                   height: 30,

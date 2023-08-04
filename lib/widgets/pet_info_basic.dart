@@ -5,10 +5,6 @@ class PetInfoBasic extends StatelessWidget {
   final PetInfo? petInfo;
 
   const PetInfoBasic({Key? key, this.petInfo}) : super(key: key);
-
-  static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -40,34 +36,28 @@ class PetInfoBasic extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                    '${petInfo!.name}',
+                Text('${petInfo!.name}',
                     style: const TextStyle(
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                    )
-                ),
+                    )),
                 const SizedBox(height: 2),
-                Text(
-                    '${petInfo!.availability}',
+                Text('${petInfo!.availability}',
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       color: Colors.white,
-                    )
-                ),
+                    )),
                 const SizedBox(height: 2),
-                Text(
-                    '${petInfo!.type} - ${petInfo!.breed}',
+                Text('${petInfo!.type} - ${petInfo!.breed}',
                     style: const TextStyle(
-                      fontSize: 16,
+                      fontSize: 18,
                       color: Colors.white,
-                    )
-                ),
+                    )),
                 const SizedBox(height: 2),
               ],
-            )
-        ),],
+            )),
+      ],
     );
   }
 }

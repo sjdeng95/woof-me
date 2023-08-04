@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../../widgets/public_navigation.dart';
+//     import '../../widgets/public_navigation.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -12,9 +12,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 20, fontWeight: FontWeight.bold);
-
   final user = FirebaseAuth.instance.currentUser!;
 
   Future<bool> isAdmin() async {
@@ -51,10 +48,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    const Text('Signed in as'),
+                    Text('Signed in as',
+                        style: Theme.of(context).textTheme.bodyMedium),
                     Text(
                       '${user.email}',
-                      style: optionStyle,
+                      style: Theme.of(context).textTheme.headlineSmall,
                     ),
                     // if (isAdmin)  // Render the SwitchListTile only if the user is admin
                     //   SwitchListTile(
@@ -74,15 +72,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       style: FilledButton.styleFrom(
                           minimumSize: const Size.fromHeight(50.0)),
                       icon: const Icon(Icons.exit_to_app_rounded, size: 30),
-                      label: const Text('Sign Out'),
+                      label: Text('Sign Out',
+                          style: Theme.of(context).textTheme.displayMedium),
                       onPressed: () => FirebaseAuth.instance.signOut(),
                     )
                   ]),
             ),
           );
         } else {
-          return const Text(
-              'Something went wrong'); // In case of any other unexpected situation
+          return Text('Something went wrong',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineMedium); // In case of any other unexpected situation
         }
       },
     );

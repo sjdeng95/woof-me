@@ -22,7 +22,8 @@ class _SwipeScreenState extends State<SwipeScreen> {
   PetInfo pet = PetInfo();
 
   final AppinioSwiperController controller = AppinioSwiperController();
-  final CollectionReference _usersCollectionRef = FirebaseFirestore.instance.collection('Users');
+  final CollectionReference _usersCollectionRef =
+      FirebaseFirestore.instance.collection('Users');
   final currentUser = FirebaseAuth.instance.currentUser!;
 
   @override
@@ -32,17 +33,18 @@ class _SwipeScreenState extends State<SwipeScreen> {
   }
 
   Future<void> getData() async {
-    DocumentSnapshot userDoc = await _usersCollectionRef.doc(currentUser.email).get();
+    DocumentSnapshot userDoc =
+        await _usersCollectionRef.doc(currentUser.email).get();
     List<String> likedPetsIds = List<String>.from(userDoc['liked_pets']);
     List<String> dislikedPetsIds = List<String>.from(userDoc['disliked_pets']);
 
     QuerySnapshot querySnapshot = await FirebaseFirestore.instance
         .collection('pets')
-        .where('availability', whereIn: ["Available", "Pending"])
-        .get();
+        .where('availability', whereIn: ["Available", "Pending"]).get();
 
     final petInfo = querySnapshot.docs.where((doc) {
-      return !likedPetsIds.contains(doc.id) && !dislikedPetsIds.contains(doc.id);
+      return !likedPetsIds.contains(doc.id) &&
+          !dislikedPetsIds.contains(doc.id);
     }).map((doc) {
       return PetInfo(
           petId: doc.id,
@@ -92,7 +94,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
       children: <Widget>[
         ElevatedButton.icon(
           icon: const Icon(Icons.close_rounded, size: 35.0, color: Colors.red),
-          label: const Text('Dislike', style: TextStyle(color: Colors.black)),
+          label: Text('Dislike', style: Theme.of(context).textTheme.bodyMedium),
           onPressed: () {
             controller.swipeLeft();
           },
@@ -105,7 +107,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
         ),
         ElevatedButton.icon(
           icon: const Icon(Icons.undo_rounded, size: 35.0, color: Colors.grey),
-          label: const Text('Undo', style: TextStyle(color: Colors.black)),
+          label: Text('Undo', style: Theme.of(context).textTheme.bodyMedium),
           onPressed: () {
             controller.unswipe();
             _unswipe(true);
@@ -120,7 +122,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
         ElevatedButton.icon(
           icon: const Icon(Icons.favorite_rounded,
               size: 35.0, color: Colors.pinkAccent),
-          label: const Text('Like', style: TextStyle(color: Colors.black)),
+          label: Text('Like', style: Theme.of(context).textTheme.bodyMedium),
           onPressed: () {
             controller.swipeRight();
           },
@@ -143,23 +145,28 @@ class _SwipeScreenState extends State<SwipeScreen> {
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: _usersCollectionRef.doc(currentUser.email).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else {
-            List<String> likedPets = List<String>.from(snapshot.data!['liked_pets']);
-            List<String> dislikedPets = List<String>.from(snapshot.data!['disliked_pets']);
+            List<String> likedPets =
+                List<String>.from(snapshot.data!['liked_pets']);
+            List<String> dislikedPets =
+                List<String>.from(snapshot.data!['disliked_pets']);
             return FutureBuilder<QuerySnapshot>(
-              future: FirebaseFirestore.instance
-                  .collection('pets')
-                  .where('availability', whereIn: ["Available", "Pending"])
-                  .get(),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> petSnapshot) {
+              future: FirebaseFirestore.instance.collection('pets').where(
+                  'availability',
+                  whereIn: ["Available", "Pending"]).get(),
+              builder: (BuildContext context,
+                  AsyncSnapshot<QuerySnapshot> petSnapshot) {
                 if (petSnapshot.connectionState == ConnectionState.waiting) {
                   return const Center(child: CircularProgressIndicator());
                 } else {
-                  allPets = AllPets(pets: petSnapshot.data!.docs.where((doc) {
-                    return !likedPets.contains(doc.id) && !dislikedPets.contains(doc.id);
+                  allPets = AllPets(
+                      pets: petSnapshot.data!.docs.where((doc) {
+                    return !likedPets.contains(doc.id) &&
+                        !dislikedPets.contains(doc.id);
                   }).map((doc) {
                     return PetInfo(
                         petId: doc.id,
@@ -185,26 +192,35 @@ class _SwipeScreenState extends State<SwipeScreen> {
                                 controller: controller,
                                 loop: true,
                                 padding: const EdgeInsets.all(0),
-                                onSwipe: (int index, AppinioSwiperDirection direction) {
+                                onSwipe: (int index,
+                                    AppinioSwiperDirection direction) {
                                   lastPetId = pet.petId;
-                                  if (direction == AppinioSwiperDirection.left) {
-                                    _usersCollectionRef.doc(currentUser.email).update({
-                                      'disliked_pets': FieldValue.arrayUnion([pet.petId])
+                                  if (direction ==
+                                      AppinioSwiperDirection.left) {
+                                    _usersCollectionRef
+                                        .doc(currentUser.email)
+                                        .update({
+                                      'disliked_pets':
+                                          FieldValue.arrayUnion([pet.petId])
                                     });
                                   }
-                                  if (direction == AppinioSwiperDirection.right) {
-                                    _usersCollectionRef.doc(currentUser.email).update({
-                                      'liked_pets': FieldValue.arrayUnion([pet.petId])
+                                  if (direction ==
+                                      AppinioSwiperDirection.right) {
+                                    _usersCollectionRef
+                                        .doc(currentUser.email)
+                                        .update({
+                                      'liked_pets':
+                                          FieldValue.arrayUnion([pet.petId])
                                     });
                                   }
                                 },
                                 unswipe: _unswipe,
-                                cardsBuilder: (BuildContext context, int index) {
+                                cardsBuilder:
+                                    (BuildContext context, int index) {
                                   pet = allPets.pets[index];
                                   return buildPet(petInfo: allPets.pets[index]);
                                 },
                               ))),
-
                       const SizedBox(height: 70),
                       swipeOptions(petInfo: pet)
                     ],
@@ -217,6 +233,7 @@ class _SwipeScreenState extends State<SwipeScreen> {
       ),
     );
   }
+
   String? lastPetId;
 
   void _unswipe(bool unswiped) {
@@ -233,4 +250,3 @@ class _SwipeScreenState extends State<SwipeScreen> {
     }
   }
 }
-
