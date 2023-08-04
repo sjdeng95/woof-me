@@ -15,9 +15,6 @@ class FavoritesScreen extends StatefulWidget {
 }
 
 class _FavoritesScreenState extends State<FavoritesScreen> {
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-
   final CollectionReference _petsCollectionRef =
       FirebaseFirestore.instance.collection('pets');
 
