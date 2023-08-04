@@ -91,44 +91,53 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                   appBar: AppBar(
                     title: const Text('Verify Email'),
                   ),
-                  body: Padding(
-                      padding: const EdgeInsets.all(30.0),
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                                'Please verify your email. An email was sent to ${FirebaseAuth.instance.currentUser!.email}.',
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                                textAlign: TextAlign.center),
-                            const SizedBox(height: 30),
-                            FilledButton.icon(
-                              style: FilledButton.styleFrom(
-                                minimumSize: const Size.fromHeight(50.0),
+                  body: Stack(children: <Widget>[
+                    Container(
+                        decoration: const BoxDecoration(
+                            image: DecorationImage(
+                                opacity: 30,
+                                image: AssetImage('assets/images/pup3.jpg'),
+                                fit: BoxFit.fitHeight))),
+                    Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const SizedBox(height: 50),
+                              Text(
+                                  'Please verify your email. An email was sent to ${FirebaseAuth.instance.currentUser!.email}.',
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                  textAlign: TextAlign.center),
+                              const SizedBox(height: 30),
+                              FilledButton.icon(
+                                style: FilledButton.styleFrom(
+                                  minimumSize: const Size.fromHeight(50.0),
+                                ),
+                                icon: const Icon(Icons.email_rounded, size: 30),
+                                label: Text('Resend Email',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium),
+                                onPressed: () => canResendEmail
+                                    ? sendVerificationEmail()
+                                    : null,
                               ),
-                              icon: const Icon(Icons.email_rounded, size: 30),
-                              label: Text('Resend Email',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .displayMedium),
-                              onPressed: () => canResendEmail
-                                  ? sendVerificationEmail()
-                                  : null,
-                            ),
-                            const SizedBox(height: 30),
-                            FilledButton.tonal(
-                              style: FilledButton.styleFrom(
-                                minimumSize: const Size.fromHeight(50.0),
+                              const SizedBox(height: 30),
+                              FilledButton.tonal(
+                                style: FilledButton.styleFrom(
+                                  minimumSize: const Size.fromHeight(50.0),
+                                ),
+                                child: Text('Cancel',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineSmall),
+                                onPressed: () =>
+                                    FirebaseAuth.instance.signOut(),
                               ),
-                              child: Text('Cancel',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .headlineSmall),
-                              onPressed: () => FirebaseAuth.instance.signOut(),
-                            ),
-                          ])),
-                );
+                            ]))
+                  ]));
         } else {
           return const Text('Something went wrong');
         }
