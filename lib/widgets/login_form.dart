@@ -62,7 +62,6 @@ class _LoginFormState extends State<LoginForm> {
                   const SizedBox(
                     height: 20,
                   ),
-
                   TextFormField(
                     controller: emailController,
                     textInputAction: TextInputAction.next,
@@ -84,8 +83,8 @@ class _LoginFormState extends State<LoginForm> {
                         : null,
                   ),
                   const SizedBox(height: 15.0),
-                  ElevatedButton.icon(
-                    style: ElevatedButton.styleFrom(
+                  FilledButton.icon(
+                    style: FilledButton.styleFrom(
                       minimumSize: const Size.fromHeight(50.0),
                     ),
                     icon: const Icon(Icons.lock_open, size: 30),

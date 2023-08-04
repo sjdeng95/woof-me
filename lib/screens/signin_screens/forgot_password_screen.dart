@@ -50,8 +50,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
                                 : null,
                       ),
                       const SizedBox(height: 15.0),
-                      ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
+                      FilledButton.icon(
+                        style: FilledButton.styleFrom(
                           minimumSize: const Size.fromHeight(50.0),
                         ),
                         icon: const Icon(Icons.email_rounded, size: 30),

@@ -86,7 +86,7 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (snapshot.hasData && snapshot.data == true) {
-          return const AdminNavigation(); 
+          return const AdminNavigation();
         } else if (snapshot.hasData && snapshot.data == false) {
           return isEmailVerified
               ? const PublicNavigation()
@@ -105,8 +105,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                                 style: optionStyle,
                                 textAlign: TextAlign.center),
                             const SizedBox(height: 30),
-                            ElevatedButton.icon(
-                              style: ElevatedButton.styleFrom(
+                            FilledButton.icon(
+                              style: FilledButton.styleFrom(
                                 minimumSize: const Size.fromHeight(50.0),
                               ),
                               icon: const Icon(Icons.email_rounded, size: 30),
@@ -117,8 +117,8 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
                                   : null,
                             ),
                             const SizedBox(height: 30),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
+                            FilledButton.tonal(
+                              style: FilledButton.styleFrom(
                                 minimumSize: const Size.fromHeight(50.0),
                               ),
                               child: const Text('Cancel', style: optionStyle),
