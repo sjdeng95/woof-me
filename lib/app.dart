@@ -13,11 +13,13 @@ class MyApp extends StatelessWidget {
       scaffoldMessengerKey: Utils.messengerKey,
       theme: ThemeData(
           appBarTheme: const AppBarTheme(
-              backgroundColor: Colors.blue,
-              centerTitle: true,
-              iconTheme: IconThemeData(color: Colors.white),
+              backgroundColor: Colors.white,
+              // centerTitle: true,
+              iconTheme: IconThemeData(
+                color: Colors.black87,
+              ),
               titleTextStyle: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black87,
                   fontWeight: FontWeight.bold,
                   fontSize: 25)),
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
