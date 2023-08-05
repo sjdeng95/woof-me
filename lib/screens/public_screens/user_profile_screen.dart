@@ -66,7 +66,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: const Text('My Profile'),
-        backgroundColor: Colors.blue,
       ),
       body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
