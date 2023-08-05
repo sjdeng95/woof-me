@@ -2,7 +2,6 @@ class PetInfo {
   String? petId;
   String? name;
   String? pic;
-  int? age;
   String? type;
   String? breed;
   bool? goodAnimals;
@@ -16,7 +15,6 @@ class PetInfo {
       {this.petId,
       this.name,
       this.pic,
-      this.age,
       this.type,
       this.breed,
       this.goodAnimals,

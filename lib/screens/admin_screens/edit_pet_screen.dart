@@ -1,69 +1,97 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:woofme/screens/admin_screens/all_pets_screen.dart';
+import '../../models/pet_info.dart';
 
-class NewPetScreen extends StatefulWidget {
-  const NewPetScreen({super.key});
+class EditPetScreen extends StatefulWidget {
+  final PetInfo petInfo;
+
+  const EditPetScreen({Key? key, required this.petInfo}) : super(key: key);
 
   @override
-  State<NewPetScreen> createState() => _NewPetScreenState();
+  State<EditPetScreen> createState() => _EditPetScreenState();
 }
 
-class _NewPetScreenState extends State<NewPetScreen> {
+class _EditPetScreenState extends State<EditPetScreen> {
   final _formKey = GlobalKey<FormState>();
-  final _nameController = TextEditingController();
-  final _typeController = TextEditingController();
-  final _breedController = TextEditingController();
+  late TextEditingController _nameController;
+  late TextEditingController _typeController;
+  late TextEditingController _breedController;
   late var _availability = 'Available';
-  final _storyController = TextEditingController();
-  final _picController = TextEditingController();
+  late TextEditingController _storyController;
+  late TextEditingController _picController;
   bool _goodAnimals = false;
   bool _goodChildren = false;
   bool _mustLeash = false;
 
-  void _addPet() async {
-    if (_formKey.currentState!.validate()) {
-      await FirebaseFirestore.instance.collection('pets').add({
-        'name': _nameController.text,
-        'type': _typeController.text,
-        'breed': _breedController.text,
-        'good_w_animals': _goodAnimals,
-        'good_w_children': _goodChildren,
-        'must_leash': _mustLeash,
-        'availability': _availability,
-        'story': _storyController.text,
-        'pic': _picController.text,
-        'created_at': FieldValue.serverTimestamp(),
-      });
-
-      _nameController.clear();
-      _typeController.clear();
-      _breedController.clear();
-      _goodAnimals = false;
-      _goodChildren = false;
-      _mustLeash = false;
-      _storyController.clear();
-      _picController.clear();
-
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const AllPetsScreen()),
-      );
-    }
-  }
-
   @override
   void initState() {
     super.initState();
-    _picController.text =
-        'https://firebasestorage.googleapis.com/v0/b/woofme-467.appspot.com/o/DEFAULT%20EMPTY%20PICTURE%2Fdefault.jpg?alt=media&token=390352a3-1fe9-42f7-b48f-3611e7e41858';
+
+    _nameController = TextEditingController(text: widget.petInfo.name);
+    _typeController = TextEditingController(text: widget.petInfo.type);
+    _breedController = TextEditingController(text: widget.petInfo.breed);
+    _availability = widget.petInfo.availability!;
+    _storyController = TextEditingController(text: widget.petInfo.story);
+    _picController = TextEditingController(text: widget.petInfo.pic);
+    _goodAnimals = widget.petInfo.goodAnimals!;
+    _goodChildren = widget.petInfo.goodChildren!;
+    _mustLeash = widget.petInfo.mustLeash!;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _typeController.dispose();
+    _breedController.dispose();
+    _storyController.dispose();
+    _picController.dispose();
+
+    super.dispose();
+  }
+
+  void _updatePet() async {
+    if (_formKey.currentState!.validate()) {
+      try {
+        await FirebaseFirestore.instance.collection('pets').doc(widget.petInfo.petId).update({
+          'name': _nameController.text,
+          'type': _typeController.text,
+          'breed': _breedController.text,
+          'good_w_animals': _goodAnimals,
+          'good_w_children': _goodChildren,
+          'must_leash': _mustLeash,
+          'availability': _availability,
+          'story': _storyController.text,
+          'pic': _picController.text,
+        });
+
+        final updatedPetInfo = PetInfo(
+          petId: widget.petInfo.petId,
+          name: _nameController.text,
+          type: _typeController.text,
+          breed: _breedController.text,
+          goodAnimals: _goodAnimals,
+          goodChildren: _goodChildren,
+          mustLeash: _mustLeash,
+          availability: _availability,
+          story: _storyController.text,
+          pic: _picController.text,
+        );
+
+        Navigator.pop(context, updatedPetInfo);
+      } catch (e) {
+        if (kDebugMode) {
+          print("Error updating pet: $e");
+        }
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Add a Pet'),
+        title: const Text('Edit Pet'),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -74,15 +102,15 @@ class _NewPetScreenState extends State<NewPetScreen> {
               children: [
                 _picController.text.isNotEmpty
                     ? Image.network(
-                        _picController.text,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      )
+                  _picController.text,
+                  height: 100,
+                  width: 100,
+                  fit: BoxFit.cover,
+                )
                     : const Placeholder(
-                        fallbackWidth: 100,
-                        fallbackHeight: 100,
-                      ),
+                  fallbackWidth: 100,
+                  fallbackHeight: 100,
+                ),
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _nameController,
@@ -233,19 +261,12 @@ class _NewPetScreenState extends State<NewPetScreen> {
                     });
                   },
                 ),
-                const SizedBox(height: 20),
-                FilledButton.icon(
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50.0),
-                  ),
-                  icon: const Icon(Icons.save_alt_rounded),
-                  onPressed: _addPet,
-                  label: Text('Add Pet',
-                      style: Theme.of(context).textTheme.displayMedium),
+                ElevatedButton.icon(
+                  onPressed: _updatePet,
+                  icon: const Icon(Icons.update),
+                  label: const Text('Update'),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const SizedBox(height: 30),
               ],
             ),
           ),

@@ -52,9 +52,12 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
         leading: SizedBox(
           height: double.infinity,
           child: CircleAvatar(
-            backgroundImage: NetworkImage(
-              '${user.pic}',
-            ),
+            backgroundImage: user.pic != null && user.pic!.isNotEmpty
+                ? NetworkImage('${user.pic}')
+                : null,
+            child: user.pic == null || user.pic!.isEmpty
+                ? const Icon(Icons.person) // Show default user icon if user picture is not available
+                : null,
           ),
         ),
         title: Text('${user.name}',
@@ -79,8 +82,6 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final user = FirebaseAuth.instance.currentUser!;
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('All Users'),

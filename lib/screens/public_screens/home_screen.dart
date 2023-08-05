@@ -17,7 +17,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   AllPets allPets = AllPets();
-
   PetInfo pet = PetInfo();
 
   @override
@@ -37,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           as Map<String, dynamic>; // Convert document snapshot into a Map
 
       return PetInfo(
+          petId: doc.id,
           name: data['name'] ?? '',
           type: capitalize(data['type'] ?? ''),
           breed: capitalize(data['breed'] ?? ''),
@@ -91,16 +91,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final user = FirebaseAuth.instance.currentUser!;
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('Woof-Me'),
         ),
-        body: ListView.builder(
-          itemCount: allPets.numberOfPets,
-          itemBuilder: (context, index) =>
-              _buildPet(context, allPets.pets[index]),
+        body: RefreshIndicator(
+          onRefresh: getData,
+          child: ListView.builder(
+            itemCount: allPets.numberOfPets,
+            itemBuilder: (context, index) =>
+                _buildPet(context, allPets.pets[index]),
+          ),
         ));
   }
 }
