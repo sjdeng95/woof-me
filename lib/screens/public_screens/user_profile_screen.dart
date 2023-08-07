@@ -110,7 +110,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                   // user email
                   Text(
-                    currentUser.email!,
+                    userData['email'],
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
