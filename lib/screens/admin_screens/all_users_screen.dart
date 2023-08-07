@@ -37,6 +37,7 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
           likedType: capitalize(doc['like_type']),
           likedBreed: capitalize(doc['like_breed']),
           email: doc['email'],
+          phone: doc['phone'],
           bio: doc['bio'],
           pic: doc['pic']);
     }).toList();
@@ -56,18 +57,46 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
                 ? NetworkImage('${user.pic}')
                 : null,
             child: user.pic == null || user.pic!.isEmpty
-                ? const Icon(Icons.person) // Show default user icon if user picture is not available
+                ? const Icon(Icons.person)
                 : null,
           ),
         ),
         title: Text('${user.name}',
             style: Theme.of(context).textTheme.headlineMedium),
-        subtitle: Row(
-          children: [
-            Text('Saved Pets: ${user.likedPetsCount}'),
-          ],
+        subtitle: SizedBox(
+          width: 150,
+          child: Column(
+            children: [
+              Column(
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            user.email!,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Favorite Pet: ${user.likedType!}',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
-        trailing: SizedBox(height: double.infinity, child: Text(user.email!)),
+        trailing: SizedBox(
+            height: double.infinity,
+            child: Text('Saved Pets: ${user.likedPetsCount}')),
         isThreeLine: true,
         onTap: () {
           Navigator.push(

@@ -25,6 +25,7 @@ dependencies:
   appinio_swiper: ^2.0.2
   firebase_auth: ^4.7.1
   email_validator: ^2.0.1
+  url_launcher: ^6.0.10
 
 
 
