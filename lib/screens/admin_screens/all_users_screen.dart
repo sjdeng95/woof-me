@@ -36,6 +36,7 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
           name: doc['name'],
           likedType: capitalize(doc['like_type']),
           likedBreed: capitalize(doc['like_breed']),
+          likedPets: (doc['liked_pets'] as List).cast<String>(),
           email: doc['email'],
           phone: doc['phone'],
           bio: doc['bio'],
@@ -97,6 +98,7 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
         trailing: SizedBox(
             height: double.infinity,
             child: Text('Saved Pets: ${user.likedPetsCount}')),
+            
         isThreeLine: true,
         onTap: () {
           Navigator.push(
@@ -119,6 +121,7 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
           itemCount: allUsers.numberOfUsers,
           itemBuilder: (context, index) =>
               _buildUser(context, allUsers.users[index]),
+              
         ));
   }
 }
