@@ -1,6 +1,8 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:woofme/widgets/components/text_box.dart';
 import 'package:woofme/widgets/components/check_box.dart';
 import '../../utils/image_upload.dart';
@@ -59,6 +61,9 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       await userCollection.doc(currentUser.email).update({field: newValue});
     }
   }
+  final picker = ImagePicker();
+
+
 
   @override
   Widget build(BuildContext context) {
