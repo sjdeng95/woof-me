@@ -18,6 +18,10 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   AllPets allPets = AllPets();
   PetInfo pet = PetInfo();
+  List<PetInfo> allPetsData = [];
+
+  String? typeFilter;
+  String? breedFilter;
 
   @override
   void initState() {
@@ -26,14 +30,14 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   final CollectionReference _collectionRef =
-      FirebaseFirestore.instance.collection('pets');
+  FirebaseFirestore.instance.collection('pets');
 
   Future<void> getData() async {
     QuerySnapshot querySnapshot = await _collectionRef.get();
 
-    final petInfo = querySnapshot.docs.map((doc) {
+    allPetsData = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data()
-          as Map<String, dynamic>; // Convert document snapshot into a Map
+      as Map<String, dynamic>;
 
       return PetInfo(
           petId: doc.id,
@@ -49,14 +53,111 @@ class _HomeScreenState extends State<HomeScreen> {
     }).toList();
 
     setState(() {
-      allPets = AllPets(pets: petInfo);
+      allPets = AllPets(pets: allPetsData); // initially show all pets
       if (allPets.pets.isNotEmpty) {
         pet = allPets.pets[0];
       }
     });
   }
 
+
+  void openFilterDialog(BuildContext context) {
+    String typeFilter = '';
+    String breedFilter = '';
+
+    List<String> types = ["Dog", "Cat", "Other"];
+    List<String> breeds = ["Pug", "Golden Retriever", "Bengal", "Persian", "Other"];
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              title: const Text('Filter pets'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  DropdownButton<String>(
+                    value: typeFilter.isNotEmpty ? typeFilter : null,
+                    hint: const Text("Select a type"),
+                    items: types.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        typeFilter = value ?? '';
+                      });
+                    },
+                  ),
+                  DropdownButton<String>(
+                    value: breedFilter.isNotEmpty ? breedFilter : null,
+                    hint: const Text("Select a breed"),
+                    items: breeds.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        breedFilter = value ?? '';
+                      });
+                    },
+                  ),
+                ],
+              ),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Clear filters'),
+                  onPressed: () {
+                    setState(() {
+                      typeFilter = '';
+                      breedFilter = '';
+                    });
+                    Navigator.pop(context);
+                    this.setState(() {
+                      allPets = AllPets(pets: allPetsData);
+                    });
+                  },
+                ),
+                TextButton(
+                  child: const Text('Apply filters'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    this.setState(() {
+                      allPets = AllPets(pets: allPetsData.where((petInfo) {
+                        if (typeFilter.isNotEmpty && breedFilter.isNotEmpty) {
+                          return petInfo.type == typeFilter && petInfo.breed == breedFilter;
+                        } else if (typeFilter.isNotEmpty) {
+                          return petInfo.type == typeFilter;
+                        } else if (breedFilter.isNotEmpty) {
+                          return petInfo.breed == breedFilter;
+                        }
+                        return true;
+                      }).toList());
+                    });
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
   Widget _buildPet(BuildContext context, PetInfo pet) {
+    if (typeFilter != null && pet.type != typeFilter) {
+      return Container();
+    }
+    if (breedFilter != null && pet.breed != breedFilter) {
+      return Container();
+    }
+
     return Card(
       child: ListTile(
         leading: SizedBox(
@@ -90,18 +191,38 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
+    var filteredPets = allPets.pets.where((pet) {
+      if (typeFilter != null && pet.type != typeFilter) {
+        return false;
+      }
+      if (breedFilter != null && pet.breed != breedFilter) {
+        return false;
+      }
+      return true;
+    }).toList();
+
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Woof-Me'),
-        ),
-        body: RefreshIndicator(
-          onRefresh: getData,
-          child: ListView.builder(
-            itemCount: allPets.numberOfPets,
-            itemBuilder: (context, index) =>
-                _buildPet(context, allPets.pets[index]),
+      appBar: AppBar(
+        title: const Text('Woof-Me'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.search),
+            onPressed: () => openFilterDialog(context),
           ),
-        ));
+        ],
+      ),
+      body: RefreshIndicator(
+        onRefresh: getData,
+        child: ListView.builder(
+          itemCount: filteredPets.length,
+          itemBuilder: (context, index) =>
+              _buildPet(context, filteredPets[index]),
+        ),
+      ),
+    );
   }
+
 }
+
