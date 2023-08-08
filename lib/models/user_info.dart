@@ -4,7 +4,7 @@ class UserInfo {
   String? username;
   bool? isAdmin;
   String? email;
-  int? phone;
+  String? phone;
   String? likedType;
   String? likedBreed;
   bool? likeGoodAnimals;

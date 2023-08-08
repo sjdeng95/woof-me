@@ -36,7 +36,9 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
           name: doc['name'],
           likedType: capitalize(doc['like_type']),
           likedBreed: capitalize(doc['like_breed']),
+          likedPets: (doc['liked_pets'] as List).cast<String>(),
           email: doc['email'],
+          phone: doc['phone'],
           bio: doc['bio'],
           pic: doc['pic']);
     }).toList();
@@ -52,19 +54,51 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
         leading: SizedBox(
           height: double.infinity,
           child: CircleAvatar(
-            backgroundImage: NetworkImage(
-              '${user.pic}',
-            ),
+            backgroundImage: user.pic != null && user.pic!.isNotEmpty
+                ? NetworkImage('${user.pic}')
+                : null,
+            child: user.pic == null || user.pic!.isEmpty
+                ? const Icon(Icons.person)
+                : null,
           ),
         ),
         title: Text('${user.name}',
             style: Theme.of(context).textTheme.headlineMedium),
-        subtitle: Row(
-          children: [
-            Text('Saved Pets: ${user.likedPetsCount}'),
-          ],
+        subtitle: SizedBox(
+          width: 150,
+          child: Column(
+            children: [
+              Column(
+                children: [
+                  Column(
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            user.email!,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Favorite Pet: ${user.likedType!}',
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ],
+          ),
         ),
-        trailing: SizedBox(height: double.infinity, child: Text(user.email!)),
+        trailing: SizedBox(
+            height: double.infinity,
+            child: Text('Saved Pets: ${user.likedPetsCount}')),
+            
         isThreeLine: true,
         onTap: () {
           Navigator.push(
@@ -79,8 +113,6 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final user = FirebaseAuth.instance.currentUser!;
-
     return Scaffold(
         appBar: AppBar(
           title: const Text('All Users'),
@@ -89,6 +121,7 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
           itemCount: allUsers.numberOfUsers,
           itemBuilder: (context, index) =>
               _buildUser(context, allUsers.users[index]),
+              
         ));
   }
 }
