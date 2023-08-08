@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,12 +18,9 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  // all users
   final userCollection = FirebaseFirestore.instance.collection('Users');
-
   String get email => widget.email ?? currentUser.email!;
 
-  // edit field
   Future<void> editField(String field) async {
     String newValue = "";
 
@@ -61,9 +57,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       await userCollection.doc(currentUser.email).update({field: newValue});
     }
   }
+
   final picker = ImagePicker();
-
-
 
   @override
   Widget build(BuildContext context) {

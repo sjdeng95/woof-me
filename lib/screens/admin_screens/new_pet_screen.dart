@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:woofme/screens/admin_screens/all_pets_screen.dart';
 
 class NewPetScreen extends StatefulWidget {
@@ -20,6 +24,174 @@ class _NewPetScreenState extends State<NewPetScreen> {
   bool _goodAnimals = false;
   bool _goodChildren = false;
   bool _mustLeash = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Add a Pet')),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                InkWell(
+                    onTap: _pickImage,
+                    child: _picController.text.isNotEmpty
+                        ? Image.network(
+                            _picController.text,
+                            height: 100,
+                            width: 100,
+                            fit: BoxFit.cover,
+                          )
+                        : const SizedBox(
+                            height: 50,
+                            child: Icon(
+                              Icons.add_a_photo_outlined,
+                            ))),
+                buildTextField(
+                  controller: _nameController,
+                  label: "Pet Name",
+                  validator: notEmptyValidator,
+                ),
+                buildTextField(
+                    controller: _typeController,
+                    label: 'Pet Type',
+                    validator: notEmptyValidator),
+                buildTextField(controller: _breedController, label: 'Breed'),
+                buildTextField(controller: _storyController, label: 'Story'),
+                const SizedBox(height: 20),
+                buildDispositionCheckboxes(),
+                const SizedBox(height: 20),
+                buildAvailabilityRadios(),
+                const SizedBox(height: 20),
+                buildAddPetButton(),
+                const SizedBox(height: 30),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget buildTextField(
+      {required TextEditingController controller,
+      required String label,
+      Function(String?)? validator}) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 15.0),
+      child: TextFormField(
+        controller: controller,
+        textInputAction: TextInputAction.next,
+        decoration: InputDecoration(
+          contentPadding: const EdgeInsets.all(15),
+          border: const OutlineInputBorder(),
+          labelText: label,
+        ),
+        style: Theme.of(context).textTheme.bodyMedium,
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'Please enter some text';
+          }
+          return null; // Explicitly return null when there's no error
+        },
+      ),
+    );
+  }
+
+  String? notEmptyValidator(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter $value';
+    }
+    return null;
+  }
+
+  Widget buildDispositionCheckboxes() {
+    return Column(
+      children: [
+        buildCheckboxListTile(
+            "Good with Animals", _goodAnimals, (value) => _goodAnimals = value),
+        buildCheckboxListTile("Good with Children", _goodChildren,
+            (value) => _goodChildren = value),
+        buildCheckboxListTile(
+            "Must Leash", _mustLeash, (value) => _mustLeash = value),
+      ],
+    );
+  }
+
+  Widget buildCheckboxListTile(
+      String title, bool value, Function(bool) onChanged) {
+    return CheckboxListTile(
+      title: Text(title, style: Theme.of(context).textTheme.bodyMedium),
+      value: value,
+      activeColor: Colors.green,
+      onChanged: (bool? val) => setState(() => onChanged(val ?? false)),
+    );
+  }
+
+  Widget buildAvailabilityRadios() {
+    return Column(
+      children:
+          ["Available", "Not Available", "Pending", "Adopted"].map((status) {
+        return RadioListTile<String>(
+          title: Text(status, style: Theme.of(context).textTheme.bodyMedium),
+          value: status,
+          groupValue: _availability,
+          onChanged: (String? value) {
+            setState(() {
+              _availability = value!;
+            });
+          },
+        );
+      }).toList(),
+    );
+  }
+
+  Widget buildAddPetButton() {
+    return FilledButton.icon(
+      style: FilledButton.styleFrom(minimumSize: const Size.fromHeight(50.0)),
+      icon: const Icon(Icons.save_alt_rounded),
+      onPressed: _addPet,
+      label: Text('Add Pet', style: Theme.of(context).textTheme.displayMedium),
+    );
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      File image = File(pickedFile.path);
+      uploadImageToFirebase(image);
+    }
+  }
+
+  Future<String?> uploadImageToFirebase(File image) async {
+    String imageName = DateTime.now().millisecondsSinceEpoch.toString();
+
+    Reference storageReference =
+        FirebaseStorage.instance.ref().child('pets/$imageName');
+
+    try {
+      TaskSnapshot snapshot = await storageReference.putFile(image);
+      String imageUrl = await snapshot.ref.getDownloadURL();
+
+      setState(() {
+        _picController.text = imageUrl;
+      });
+
+      return null;
+    } on FirebaseException catch (e) {
+      return e.message ??
+          'An unexpected error occurred.'; // Return a user-friendly error message
+    }
+  }
 
   void _addPet() async {
     if (_formKey.currentState!.validate()) {
@@ -50,207 +222,5 @@ class _NewPetScreenState extends State<NewPetScreen> {
         MaterialPageRoute(builder: (context) => const AllPetsScreen()),
       );
     }
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _picController.text =
-        'https://firebasestorage.googleapis.com/v0/b/woofme-467.appspot.com/o/DEFAULT%20EMPTY%20PICTURE%2Fdefault.jpg?alt=media&token=390352a3-1fe9-42f7-b48f-3611e7e41858';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Add a Pet'),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                _picController.text.isNotEmpty
-                    ? Image.network(
-                        _picController.text,
-                        height: 100,
-                        width: 100,
-                        fit: BoxFit.cover,
-                      )
-                    : const Placeholder(
-                        fallbackWidth: 100,
-                        fallbackHeight: 100,
-                      ),
-                const SizedBox(height: 20),
-                TextFormField(
-                  controller: _nameController,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder(),
-                      labelText: "Pet Name"),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter pet name';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  controller: _typeController,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder(),
-                      labelText: 'Pet Type'),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  validator: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter pet type';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  controller: _breedController,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder(),
-                      labelText: 'Breed'),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  controller: _storyController,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder(),
-                      labelText: 'Story'),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  controller: _picController,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder(),
-                      labelText: 'Image URL'),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Pet Disposition',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                CheckboxListTile(
-                  title: Text('Good with Animals',
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  value: _goodAnimals,
-                  activeColor: Colors.green,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _goodAnimals = value ?? false;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text('Good with Children',
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  value: _goodChildren,
-                  activeColor: Colors.green,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _goodChildren = value ?? false;
-                    });
-                  },
-                ),
-                CheckboxListTile(
-                  title: Text('Must Leash',
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  value: _mustLeash,
-                  activeColor: Colors.green,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _mustLeash = value ?? false;
-                    });
-                  },
-                ),
-                const SizedBox(height: 20),
-                Text(
-                  'Availability',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
-                const SizedBox(height: 10),
-                RadioListTile<String>(
-                  title: Text('Available',
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  value: 'Available',
-                  groupValue: _availability,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _availability = value!;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: Text('Not Available',
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  value: 'Not Available',
-                  groupValue: _availability,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _availability = value!;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: Text('Pending',
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  value: 'Pending',
-                  groupValue: _availability,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _availability = value!;
-                    });
-                  },
-                ),
-                RadioListTile<String>(
-                  title: Text('Adopted',
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  value: 'Adopted',
-                  groupValue: _availability,
-                  onChanged: (String? value) {
-                    setState(() {
-                      _availability = value!;
-                    });
-                  },
-                ),
-                const SizedBox(height: 20),
-                FilledButton.icon(
-                  style: FilledButton.styleFrom(
-                    minimumSize: const Size.fromHeight(50.0),
-                  ),
-                  icon: const Icon(Icons.save_alt_rounded),
-                  onPressed: _addPet,
-                  label: Text('Add Pet',
-                      style: Theme.of(context).textTheme.displayMedium),
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
   }
 }

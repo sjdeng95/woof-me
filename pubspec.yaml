@@ -26,7 +26,7 @@ dependencies:
   firebase_auth: ^4.7.1
   email_validator: ^2.0.1
   url_launcher: ^6.0.10
-
+  path: ^1.8.3
 
 
 
