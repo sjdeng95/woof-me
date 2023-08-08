@@ -202,15 +202,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 style: Theme.of(context).textTheme.headlineSmall),
             const SizedBox(height: 10),
             ElevatedButton.icon(
-                icon: const Icon(Icons.mode_edit_outline_rounded, size: 30),
-                label: Text('Edit Pets',
-                    style: Theme.of(context).textTheme.headlineSmall),
-                onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const AllPetsScreen(),
-                    ))),
-            ElevatedButton.icon(
                 icon: const Icon(Icons.my_library_add_outlined, size: 30),
                 label: Text('Add Pet',
                     style: Theme.of(context).textTheme.headlineSmall),
@@ -226,7 +217,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const AllUsersScreen(),
+                      builder: (context) =>
+                          const AllUsersScreen(fromAdmin: true),
                     ))),
           ],
         ),

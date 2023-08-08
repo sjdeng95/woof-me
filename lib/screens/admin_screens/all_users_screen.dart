@@ -8,8 +8,8 @@ import 'package:woofme/screens/public_screens/user_profile_screen.dart';
 import '../../utils/misc_functions.dart';
 
 class AllUsersScreen extends StatefulWidget {
-  const AllUsersScreen({super.key});
-
+  final bool fromAdmin;
+  const AllUsersScreen({Key? key, this.fromAdmin = false}) : super(key: key);
   @override
   State<AllUsersScreen> createState() => _AllUsersScreenState();
 }
@@ -98,14 +98,13 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
         trailing: SizedBox(
             height: double.infinity,
             child: Text('Saved Pets: ${user.likedPetsCount}')),
-            
         isThreeLine: true,
         onTap: () {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: ((context) =>
-                      UserProfileScreen(email: user.email))));
+                  builder: ((context) => UserProfileScreen(
+                      email: user.email, fromAdmin: widget.fromAdmin))));
         },
       ),
     );
@@ -121,7 +120,6 @@ class _AllUsersScreenState extends State<AllUsersScreen> {
           itemCount: allUsers.numberOfUsers,
           itemBuilder: (context, index) =>
               _buildUser(context, allUsers.users[index]),
-              
         ));
   }
 }
