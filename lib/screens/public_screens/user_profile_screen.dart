@@ -118,21 +118,19 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
 
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10),
-                    child: SwitchListTile(
-                      // This bool value toggles the switch.
-                      title: Text('Admin Account',
-                          style: Theme.of(context).textTheme.headlineSmall),
-                      value: userData['is_admin'],
-                      activeColor: Colors.red,
-                      onChanged: (widget.fromAdmin)
-                          ? (value) => userCollection
+                  if (widget.fromAdmin)
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10),
+                      child: SwitchListTile(
+                          // This bool value toggles the switch.
+                          title: Text('Admin Account',
+                              style: Theme.of(context).textTheme.headlineSmall),
+                          value: userData['is_admin'],
+                          activeColor: Colors.red,
+                          onChanged: (value) => userCollection
                               .doc(userData['email'])
-                              .update({'is_admin': value})
-                          : null,
+                              .update({'is_admin': value})),
                     ),
-                  ),
 
                   const SizedBox(height: 20),
 
