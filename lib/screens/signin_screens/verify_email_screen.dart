@@ -82,9 +82,9 @@ class _VerifyEmailScreenState extends State<VerifyEmailScreen> {
           return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
-        } else if (snapshot.hasData && snapshot.data == true) {
-          return const AdminNavigation();
-        } else if (snapshot.hasData && snapshot.data == false) {
+          // } else if (snapshot.hasData && snapshot.data == true) {
+          //   return const AdminNavigation();
+        } else if (snapshot.hasData) {
           return isEmailVerified
               ? const PublicNavigation()
               : Scaffold(

@@ -65,7 +65,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
     return Scaffold(
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: const Text('My Profile'),
+        title: const Text('User Profile'),
         backgroundColor: Colors.blue,
       ),
       body: StreamBuilder<DocumentSnapshot>(
@@ -116,7 +116,23 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
 
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 20),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10),
+                    child: SwitchListTile(
+                      // This bool value toggles the switch.
+                      title: Text('Admin Account',
+                          style: Theme.of(context).textTheme.headlineSmall),
+                      value: userData['is_admin'],
+                      activeColor: Colors.red,
+                      onChanged: (value) => userCollection
+                          .doc(userData['email'])
+                          .update({'is_admin': value}),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
 
                   //user details
                   Padding(
