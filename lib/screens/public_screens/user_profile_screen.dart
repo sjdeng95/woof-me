@@ -7,9 +7,10 @@ import 'package:woofme/widgets/components/check_box.dart';
 import '../../utils/image_upload.dart';
 
 class UserProfileScreen extends StatefulWidget {
+  final bool fromAdmin;
   final String? email;
 
-  const UserProfileScreen({super.key, this.email});
+  const UserProfileScreen({super.key, this.email, this.fromAdmin = false});
 
   @override
   State<UserProfileScreen> createState() => _UserProfileScreenState();
@@ -117,7 +118,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                   ),
 
                   const SizedBox(height: 20),
-
                   Padding(
                     padding: const EdgeInsets.only(left: 10),
                     child: SwitchListTile(
@@ -126,9 +126,11 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
                           style: Theme.of(context).textTheme.headlineSmall),
                       value: userData['is_admin'],
                       activeColor: Colors.red,
-                      onChanged: (value) => userCollection
-                          .doc(userData['email'])
-                          .update({'is_admin': value}),
+                      onChanged: (widget.fromAdmin)
+                          ? (value) => userCollection
+                              .doc(userData['email'])
+                              .update({'is_admin': value})
+                          : null,
                     ),
                   ),
 
