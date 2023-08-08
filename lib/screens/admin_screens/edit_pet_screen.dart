@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../../models/pet_info.dart';
 
 class EditPetScreen extends StatefulWidget {
@@ -50,10 +54,45 @@ class _EditPetScreenState extends State<EditPetScreen> {
     super.dispose();
   }
 
+  final _picker = ImagePicker();
+  final _storage = FirebaseStorage.instance;
+
+  Future<void> _selectAndUploadImage() async {
+    final pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      File imageFile = File(pickedFile.path);
+      try {
+        // Upload to Firebase storage
+        TaskSnapshot uploadTask = await _storage
+            .ref('pet_images/${widget.petInfo.petId}')
+            .putFile(imageFile);
+        String downloadURL = await uploadTask.ref.getDownloadURL();
+
+        // Update the _picController with new image URL
+        setState(() {
+          _picController.text = downloadURL;
+        });
+      } catch (error) {
+        if (kDebugMode) {
+          print("Error uploading image: $error");
+        }
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error uploading image. Please try again.'),
+          ),
+        );
+      }
+    }
+  }
+
   void _updatePet() async {
     if (_formKey.currentState!.validate()) {
       try {
-        await FirebaseFirestore.instance.collection('pets').doc(widget.petInfo.petId).update({
+        await FirebaseFirestore.instance
+            .collection('pets')
+            .doc(widget.petInfo.petId)
+            .update({
           'name': _nameController.text,
           'type': _typeController.text,
           'breed': _breedController.text,
@@ -100,17 +139,21 @@ class _EditPetScreenState extends State<EditPetScreen> {
             key: _formKey,
             child: Column(
               children: [
-                _picController.text.isNotEmpty
-                    ? Image.network(
-                  _picController.text,
-                  height: 100,
-                  width: 100,
-                  fit: BoxFit.cover,
-                )
-                    : const Placeholder(
-                  fallbackWidth: 100,
-                  fallbackHeight: 100,
+                GestureDetector(
+                  onTap: _selectAndUploadImage,
+                  child: _picController.text.isNotEmpty
+                      ? Image.network(
+                          _picController.text,
+                          height: 100,
+                          width: 100,
+                          fit: BoxFit.cover,
+                        )
+                      : const Placeholder(
+                          fallbackWidth: 100,
+                          fallbackHeight: 100,
+                        ),
                 ),
+
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _nameController,
@@ -163,16 +206,16 @@ class _EditPetScreenState extends State<EditPetScreen> {
                       labelText: 'Story'),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                const SizedBox(height: 15),
-                TextFormField(
-                  controller: _picController,
-                  textInputAction: TextInputAction.next,
-                  decoration: const InputDecoration(
-                      contentPadding: EdgeInsets.all(15),
-                      border: OutlineInputBorder(),
-                      labelText: 'Image URL'),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                // const SizedBox(height: 15),
+                // TextFormField(
+                //   controller: _picController,
+                //   textInputAction: TextInputAction.next,
+                //   decoration: const InputDecoration(
+                //       contentPadding: EdgeInsets.all(15),
+                //       border: OutlineInputBorder(),
+                //       labelText: 'Image URL'),
+                //   style: Theme.of(context).textTheme.bodyMedium,
+                // ),
                 const SizedBox(height: 20),
                 Text(
                   'Pet Disposition',

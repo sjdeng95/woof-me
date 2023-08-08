@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:woofme/widgets/components/text_box.dart';
 import 'package:woofme/widgets/components/check_box.dart';
 import '../../utils/image_upload.dart';
@@ -17,12 +18,9 @@ class UserProfileScreen extends StatefulWidget {
 class _UserProfileScreenState extends State<UserProfileScreen> {
   final currentUser = FirebaseAuth.instance.currentUser!;
 
-  // all users
   final userCollection = FirebaseFirestore.instance.collection('Users');
-
   String get email => widget.email ?? currentUser.email!;
 
-  // edit field
   Future<void> editField(String field) async {
     String newValue = "";
 
@@ -59,6 +57,8 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       await userCollection.doc(currentUser.email).update({field: newValue});
     }
   }
+
+  final picker = ImagePicker();
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +110,7 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                   // user email
                   Text(
-                    currentUser.email!,
+                    userData['email'],
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
