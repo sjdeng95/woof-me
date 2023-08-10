@@ -23,7 +23,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
   late TextEditingController _breedController;
   late var _availability = 'Available';
   late TextEditingController _storyController;
-  late TextEditingController _picController;
+  late TextEditingController picController;
   bool _goodAnimals = false;
   bool _goodChildren = false;
   bool _mustLeash = false;
@@ -37,7 +37,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
     _breedController = TextEditingController(text: widget.petInfo.breed);
     _availability = widget.petInfo.availability!;
     _storyController = TextEditingController(text: widget.petInfo.story);
-    _picController = TextEditingController(text: widget.petInfo.pic);
+    picController = TextEditingController(text: widget.petInfo.pic);
     _goodAnimals = widget.petInfo.goodAnimals!;
     _goodChildren = widget.petInfo.goodChildren!;
     _mustLeash = widget.petInfo.mustLeash!;
@@ -49,7 +49,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
     _typeController.dispose();
     _breedController.dispose();
     _storyController.dispose();
-    _picController.dispose();
+    picController.dispose();
 
     super.dispose();
   }
@@ -63,25 +63,26 @@ class _EditPetScreenState extends State<EditPetScreen> {
     if (pickedFile != null) {
       File imageFile = File(pickedFile.path);
       try {
-        // Upload to Firebase storage
         TaskSnapshot uploadTask = await _storage
             .ref('pet_images/${widget.petInfo.petId}')
             .putFile(imageFile);
         String downloadURL = await uploadTask.ref.getDownloadURL();
 
-        // Update the _picController with new image URL
         setState(() {
-          _picController.text = downloadURL;
+          picController.text = downloadURL;
         });
       } catch (error) {
         if (kDebugMode) {
           print("Error uploading image: $error");
         }
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Error uploading image. Please try again.'),
-          ),
-        );
+        await Future.delayed(const Duration(seconds: 1));
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Error uploading image. Please try again.'),
+            ),
+          );
+        }
       }
     }
   }
@@ -101,7 +102,7 @@ class _EditPetScreenState extends State<EditPetScreen> {
           'must_leash': _mustLeash,
           'availability': _availability,
           'story': _storyController.text,
-          'pic': _picController.text,
+          'pic': picController.text,
         });
 
         final updatedPetInfo = PetInfo(
@@ -114,10 +115,13 @@ class _EditPetScreenState extends State<EditPetScreen> {
           mustLeash: _mustLeash,
           availability: _availability,
           story: _storyController.text,
-          pic: _picController.text,
+          pic: picController.text,
         );
 
-        Navigator.pop(context, updatedPetInfo);
+        await Future.delayed(const Duration(seconds: 1));
+        if (mounted) {
+          Navigator.pop(context, updatedPetInfo);
+        }
       } catch (e) {
         if (kDebugMode) {
           print("Error updating pet: $e");
@@ -141,9 +145,9 @@ class _EditPetScreenState extends State<EditPetScreen> {
               children: [
                 GestureDetector(
                   onTap: _selectAndUploadImage,
-                  child: _picController.text.isNotEmpty
+                  child: picController.text.isNotEmpty
                       ? Image.network(
-                          _picController.text,
+                          picController.text,
                           height: 100,
                           width: 100,
                           fit: BoxFit.cover,
@@ -153,7 +157,6 @@ class _EditPetScreenState extends State<EditPetScreen> {
                           fallbackHeight: 100,
                         ),
                 ),
-
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _nameController,
@@ -206,16 +209,6 @@ class _EditPetScreenState extends State<EditPetScreen> {
                       labelText: 'Story'),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                // const SizedBox(height: 15),
-                // TextFormField(
-                //   controller: _picController,
-                //   textInputAction: TextInputAction.next,
-                //   decoration: const InputDecoration(
-                //       contentPadding: EdgeInsets.all(15),
-                //       border: OutlineInputBorder(),
-                //       labelText: 'Image URL'),
-                //   style: Theme.of(context).textTheme.bodyMedium,
-                // ),
                 const SizedBox(height: 20),
                 Text(
                   'Pet Disposition',

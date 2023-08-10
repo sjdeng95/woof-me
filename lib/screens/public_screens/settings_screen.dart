@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:woofme/screens/admin_screens/all_pets_screen.dart';
 import 'package:woofme/screens/admin_screens/all_users_screen.dart';
 import 'package:woofme/screens/admin_screens/new_pet_screen.dart';
 

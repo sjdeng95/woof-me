@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:woofme/widgets/admin_navigation.dart';
 import 'package:woofme/widgets/components/utils.dart';
 import 'package:woofme/widgets/public_navigation.dart';
 

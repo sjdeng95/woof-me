@@ -17,21 +17,16 @@ Future<void> editProfilePicture(BuildContext context) async {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final userCollection = FirebaseFirestore.instance.collection('Users');
   
-  // Get the image
   final imageFile = await pickImage();
-  
-  // If image is null, show error dialog
   if (imageFile == null) {
     return;
   }
 
-  // Upload to Firebase Storage
   final reference = FirebaseStorage.instance.ref('user_pics/${currentUser.email}');
   final uploadTask = reference.putFile(imageFile);
   final taskSnapshot = await uploadTask.whenComplete(() {});
   final downloadURL = await taskSnapshot.ref.getDownloadURL();
 
-  // Update Firestore with the image URL
   await userCollection.doc(currentUser.email).update({
     'pic': downloadURL,
   });

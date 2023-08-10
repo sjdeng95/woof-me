@@ -13,24 +13,26 @@ class PetProfileScreen extends StatefulWidget {
   const PetProfileScreen({Key? key, required this.petInfo}) : super(key: key);
 
   @override
-  State<PetProfileScreen> createState() => _PetProfileScreenState(petInfo);
+  State<PetProfileScreen> createState() => PetProfileScreenState();
 }
 
-class _PetProfileScreenState extends State<PetProfileScreen> {
-  PetInfo petInfo;
+class PetProfileScreenState extends State<PetProfileScreen> {
+  late PetInfo petInfo;
   final currentUser = FirebaseAuth.instance.currentUser!;
-  final CollectionReference _usersCollectionRef = FirebaseFirestore.instance.collection('Users');
+  final CollectionReference usersCollectionRef =
+      FirebaseFirestore.instance.collection('Users');
   bool isAdmin = false;
-  _PetProfileScreenState(this.petInfo);
 
   @override
   void initState() {
     super.initState();
+    petInfo = widget.petInfo;
     getAdminStatus();
   }
 
   Future<void> getAdminStatus() async {
-    DocumentSnapshot userDoc = await _usersCollectionRef.doc(currentUser.email).get();
+    DocumentSnapshot userDoc =
+        await usersCollectionRef.doc(currentUser.email).get();
     setState(() {
       isAdmin = userDoc['is_admin'];
     });
@@ -42,7 +44,8 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('Delete ${widget.petInfo.name}?'),
-          content: Text('Are you sure you want to delete ${widget.petInfo.name}?'),
+          content:
+              Text('Are you sure you want to delete ${widget.petInfo.name}?'),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context, false),
@@ -59,12 +62,18 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
 
     if (confirmed == true) {
       try {
-        await FirebaseFirestore.instance.collection('pets').doc(widget.petInfo.petId).delete();
-        Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(builder: (context) => const AllPetsScreen()),
-              (Route<dynamic> route) => false,
-        );
+        await FirebaseFirestore.instance
+            .collection('pets')
+            .doc(widget.petInfo.petId)
+            .delete();
+        await Future.delayed(const Duration(seconds: 1));
+        if (mounted) {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const AllPetsScreen()),
+            (Route<dynamic> route) => false,
+          );
+        }
       } catch (e) {
         if (kDebugMode) {
           print("Error deleting pet: $e");
@@ -99,7 +108,8 @@ class _PetProfileScreenState extends State<PetProfileScreen> {
           PetInfoMore(petInfo: petInfo),
           if (isAdmin)
             Padding(
-              padding: const EdgeInsets.only(left: 16.0, right: 16.0, top: 16.0, bottom: 32.0),
+              padding: const EdgeInsets.only(
+                  left: 16.0, right: 16.0, top: 16.0, bottom: 32.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [

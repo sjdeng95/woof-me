@@ -217,10 +217,13 @@ class _NewPetScreenState extends State<NewPetScreen> {
       _storyController.clear();
       _picController.clear();
 
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const AllPetsScreen()),
-      );
+      await Future.delayed(const Duration(seconds: 1));
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const AllPetsScreen()),
+        );
+      }
     }
   }
 }

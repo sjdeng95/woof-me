@@ -49,7 +49,6 @@ class TextBox extends StatelessWidget {
               )
             ],
           ),
-          //text
           Text(text),
       ]),
     );
