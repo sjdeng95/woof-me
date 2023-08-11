@@ -33,7 +33,7 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
 
     final petInfo = querySnapshot.docs.map((doc) {
       Map<String, dynamic> data = doc.data()
-          as Map<String, dynamic>; // Convert document snapshot into a Map
+          as Map<String, dynamic>; 
 
       return PetInfo(
           petId: doc.id,
@@ -91,7 +91,6 @@ class _AllPetsScreenState extends State<AllPetsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final user = FirebaseAuth.instance.currentUser!;
 
     return Scaffold(
         appBar: AppBar(

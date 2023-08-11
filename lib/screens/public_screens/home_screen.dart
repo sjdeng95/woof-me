@@ -53,7 +53,7 @@ class _HomeScreenState extends State<HomeScreen> {
     }).toList();
 
     setState(() {
-      allPets = AllPets(pets: allPetsData); // initially show all pets
+      allPets = AllPets(pets: allPetsData); 
       if (allPets.pets.isNotEmpty) {
         pet = allPets.pets[0];
       }

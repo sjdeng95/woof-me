@@ -148,12 +148,10 @@ class _SignUpFormState extends State<SignUpForm> {
 
   Future signUp() async {
     try {
-      // Creating the user
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
               email: emailController.text.trim(),
               password: passwordController.text.trim());
-      // creating a new document in cloud firebase
       FirebaseFirestore.instance
           .collection("Users")
           .doc(userCredential.user!.email)
@@ -173,7 +171,6 @@ class _SignUpFormState extends State<SignUpForm> {
         'phone': '',
         'pic': '',
       });
-      // Navigate to the update user info screen
       if (context.mounted) {
         Navigator.push(
           context,

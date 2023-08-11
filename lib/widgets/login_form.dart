@@ -153,11 +153,3 @@ class _LoginFormState extends State<LoginForm> {
   }
 }
 
-// extra ui decoration removed
-// const SizedBox(height: 40.0),
-// Image.asset(
-//   'assets/images/login_dog.gif',
-//   width: 200,
-//   height: 200,
-//   fit: BoxFit.contain,
-// )

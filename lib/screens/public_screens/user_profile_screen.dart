@@ -40,12 +40,10 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           },
         ),
         actions: [
-          //cancel button
           TextButton(
               child: const Text('Cancel'),
               onPressed: () => Navigator.pop(context)),
 
-          // save button
           TextButton(
             child: const Text('Save'),
             onPressed: () => Navigator.of(context).pop(newValue),
@@ -53,7 +51,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         ],
       ),
     );
-    // update in firestore
     if (newValue.trim().isNotEmpty) {
       await userCollection.doc(currentUser.email).update({field: newValue});
     }
@@ -67,7 +64,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
       backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: const Text('User Profile'),
-        backgroundColor: Colors.blue,
       ),
       body: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
@@ -103,14 +99,12 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                   const SizedBox(height: 10),
 
-                  // username
                   Text(
                     userData['username'],
                     textAlign: TextAlign.center,
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
 
-                  // user email
                   Text(
                     userData['email'],
                     textAlign: TextAlign.center,
@@ -134,7 +128,6 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
                   const SizedBox(height: 20),
 
-                  //user details
                   Padding(
                     padding: const EdgeInsets.only(left: 25),
                     child: Text("User Details",
