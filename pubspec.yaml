@@ -26,7 +26,25 @@ dependencies:
   email_validator: ^2.0.1
   url_launcher: ^6.0.10
   path: ^1.8.3
+  flutter_launcher_icons: "^0.13.1"
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/profile.png"
+  min_sdk_android: 19
+  background_color: "#FFFFFF"
+
+  web:
+    generate: true
+    image_path: "assets/images/profile.png"
+    background_color: "#FFFFFF"
+  windows:
+    generate: true
+    image_path: "assets/images/profile.png"
+  macos:
+    generate: true
+    image_path: "assets/images/profile.png"
 
 
 dev_dependencies:
@@ -49,28 +67,4 @@ flutter:
     - 'assets/images/pup4.jpg'
     - 'assets/images/puppaw.png'
 
-  # An image asset can refer to one or more resolution-specific "variants", see
-  # https://flutter.dev/assets-and-images/#resolution-aware
 
-  # For details regarding adding assets from package dependencies, see
-  # https://flutter.dev/assets-and-images/#from-packages
-
-  # To add custom fonts to your application, add a fonts section here,
-  # in this "flutter" section. Each entry in this list should have a
-  # "family" key with the font family name, and a "fonts" key with a
-  # list giving the asset and other descriptors for the font. For
-  # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
-  #
-  # For details regarding fonts from package dependencies,
-  # see https://flutter.dev/custom-fonts/#from-packages
