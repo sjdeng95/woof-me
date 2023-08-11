@@ -12,7 +12,6 @@ dependencies:
   firebase_core: ^2.15.0
   cloud_firestore: ^4.8.3
   firebase_storage: ^11.0.4
-  shared_preferences: ^2.0.15
   image_picker: ^0.8.4+5
   http: ^0.13.4
 
@@ -47,6 +46,7 @@ flutter:
     - 'assets/images/pup1.jpg'
     - 'assets/images/pup2.jpg'
     - 'assets/images/pup3.jpg'
+    - 'assets/images/pup4.jpg'
     - 'assets/images/puppaw.png'
 
   # An image asset can refer to one or more resolution-specific "variants", see

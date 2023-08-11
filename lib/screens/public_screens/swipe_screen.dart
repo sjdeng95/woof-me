@@ -180,6 +180,29 @@ class _SwipeScreenState extends State<SwipeScreen> {
                         story: doc['story'],
                         pic: doc['pic']);
                   }).toList());
+                  if (allPets.numberOfPets == 0) {
+                    return Stack(children: <Widget>[
+                      Container(
+                          decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage('assets/images/pup4.jpg'),
+                                  fit: BoxFit.fitHeight))),
+                      Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 30),
+                            Text(
+                                'Sorry, there are no more available pets to view. Come back again soon!',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                                textAlign: TextAlign.center)
+                          ],
+                        ),
+                      ),
+                    ]);
+                  }
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
